@@ -35,26 +35,11 @@ let
     findutils
     file
     git
-    glxinfo
     gn
     gnused
     gnutar
-    gtk3
-    gnome3.gvfs
     glib
-    # gnome3.gconf
     gzip
-    fontconfig
-    freetype
-    libpulseaudio
-    libGL
-    xorg.libX11
-    xorg.libXext
-    xorg.libXi
-    xorg.libXrandr
-    xorg.libXrender
-    xorg.libXtst
-    xorg.setxkbmap
     pciutils
     unzip
     which
