@@ -180,7 +180,8 @@ with nixpkgs;
     # openjdk
     # jetbrains.jdk
     # zulu
-    jdk13
+    # jdk14_headless
+    jdk
     # dart_dev
     gnumake
     gcc
