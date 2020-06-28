@@ -1,4 +1,4 @@
-# CyberWOW
+# CyberWOW Mobile Node
 
 A dumb android pruned full node for Wownero.
 
