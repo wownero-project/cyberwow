@@ -1,0 +1,38 @@
+name: lolnode
+description: A lolnode mobile node
+
+version: 0.5.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  path_provider: ^1.1.0
+  http: ^0.12.0
+  logging: ^0.11.3
+  intl: ^0.16.0
+  shared_preferences: ^0.5.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+flutter:
+  uses-material-design: true
+
+  assets:
+   - assets/lolnode_icon.png
+
+  fonts:
+    - family: RobotoMono
+      fonts:
+        - asset: fonts/RobotoMono-Regular.ttf
+        - asset: fonts/RobotoMono-Bold.ttf
+          weight: 700
+    - family: VT323
+      fonts:
+        - asset: fonts/VT323/VT323-Regular.ttf
