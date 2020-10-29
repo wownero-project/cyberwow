@@ -107,42 +107,13 @@ let
     ; sha256 = "1x6lll81z4ah732zwpw481qfbzg7yml0nwdgbnd5388jnz3274ym"
     ; }
 
-; randomwow-source =
-    let
-      name = "RandomWOW"
-    ; version = "1.1.6"
-    ; in
-    nixpkgs.fetchurl
+; lolnero-source =
+    nixpkgs.fetchgit
     {
-      url = "https://github.com/wownero/${name}/archive/${version}.tar.gz"
-    ; sha256 = "1c55y2dwrayh6k1avpchs89gq1mvy5c305h92jm2k48kzhw6a792"
-    ; }
-
-; wownero-source =
-    nixpkgs.fetchFromGitHub
-    {
-      owner = "wownero"
-    ; repo = "wownero"
-    ; rev = "dev-v0.8"
-    ; sha256 = "13032pa9wx3h6x860f9iy28vdpkc94wzby153ig7hw4dixjqhs6w"
-    ; }
-
-; miniupnp-source =
-    nixpkgs.fetchFromGitHub
-    {
-      owner = "miniupnp"
-    ; repo = "miniupnp"
-    ; rev = "7800de9"
-    ; sha256 = "1f7jgll8lxz2l5lifgqafgx8694x0svgwyz8w8w4cwavm9lmah63"
-    ; }
-
-; unbound-source =
-    nixpkgs.fetchFromGitHub
-    {
-      owner = "monero-project"
-    ; repo = "unbound"
-    ; rev = "9a77c29"
-    ; sha256 = "0dmm5pz2yf1lfand9k1c8x0mbrwynkpphh877b8jbavjrwiwsw35"
+      url = "https://gitlab.com/fuwa/lolnero.git"
+    ; rev = "e9d9b9ff"
+    ; sha256 = "0i6dgrdrgbds3ivynr7wgvxqcby5v83056h1scgcxk6g5047ldz0"
+    ; fetchSubmodules = false
     ; }
 
 ; in
@@ -209,11 +180,8 @@ with nixpkgs;
     export SRC_ICONV=${iconv-source}
     export SRC_BOOST=${boost-source}
     export SRC_SODIUM=${sodium-source}
-    export SRC_RANDOMWOW=${randomwow-source}
-    export SRC_MINIUPNP_DIR=${miniupnp-source}
-    export SRC_UNBOUND_DIR=${unbound-source}
     export SRC_RAPIDJSON_DIR=${nixpkgs.rapidjson.src}
-    export SRC_WOWNERO_DIR=${wownero-source}
+    export SRC_WOWNERO_DIR=${lolnero-source}
 
     export PATH_NCURSES=${nixpkgs.ncurses5}
     export PATH

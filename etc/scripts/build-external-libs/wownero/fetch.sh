@@ -57,30 +57,9 @@ else
 fi
 
 
-if [ ! -z $SRC_MINIUPNP_DIR ]; then
-    echo "using pre-fetched miniupnpc"
-    rsync -av --no-perms --no-owner --no-group --delete $SRC_MINIUPNP_DIR/* external/miniupnp
-else
-    git submodule update --init external/miniupnp
-fi
-
 if [ ! -z $SRC_RAPIDJSON_DIR ]; then
     echo "using pre-fetched rapidjson"
     rsync -av --no-perms --no-owner --no-group --delete $SRC_RAPIDJSON_DIR/* external/rapidjson
 else
     git submodule update --init external/rapidjson
-fi
-
-if [ ! -z $SRC_RANDOMWOW ]; then
-    echo "using pre-fetched RandomWOW"
-    tar xzf $SRC_RANDOMWOW -C external/RandomWOW --strip-components=1
-else
-    git submodule update --init external/RandomWOW
-fi
-
-if [ ! -z $SRC_UNBOUND_DIR ]; then
-    echo "using pre-fetched unbound"
-    rsync -av --no-perms --no-owner --no-group --delete $SRC_UNBOUND_DIR/* external/unbound
-else
-    git submodule update --init external/unbound
 fi
