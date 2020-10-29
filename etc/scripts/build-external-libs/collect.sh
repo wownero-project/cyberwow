@@ -37,7 +37,7 @@ src_root=$BUILD_ROOT_SRC
 build_root=$BUILD_ROOT
 target_root=`pwd`
 
-name=wownero
+name=lolnero
 
 cd $src_root/${name}
 
@@ -61,9 +61,9 @@ for arch in ${archs[@]}; do
     esac
 
     echo "collecting for ${arch}"
-    mkdir -p $target_root/cyberwow/android/app/src/main/jniLibs/$target_abi
-    cp build/release/bin/wownerod \
-      $target_root/cyberwow/android/app/src/main/jniLibs/$target_abi/libwownerod.so
+    mkdir -p $target_root/lolnode/android/app/src/main/jniLibs/$target_abi
+    cp build/release/bin/lolnerod \
+      $target_root/lolnode/android/app/src/main/jniLibs/$target_abi/liblolnerod.so
 
 done
 

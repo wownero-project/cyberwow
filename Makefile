@@ -1,4 +1,4 @@
-# Copyright (c) 2019, The Wownero Project
+# Copyright (c) 2019, The Lolnero Project
 #
 # All rights reserved.
 #
@@ -30,47 +30,47 @@
 .PHONY: toolchain clean
 
 clean:
-	-rm -f ./cyberwow/android/app/src/main/jniLibs/arm64-v8a/*.so
-	cd cyberwow && \
+	-rm -f ./lolnode/android/app/src/main/jniLibs/arm64-v8a/*.so
+	cd lolnode && \
   flutter clean
 
 watch:
-	find cyberwow/lib/ -name '*.dart' | \
+	find lolnode/lib/ -name '*.dart' | \
 	entr kill -USR1 `cat /tmp/flutter.pid`
 
 watch-build:
-	find cyberwow/lib/ -name '*.dart' | \
+	find lolnode/lib/ -name '*.dart' | \
 	entr $(MAKE) build-debug
 
 run:
-	cd cyberwow && \
+	cd lolnode && \
 	flutter run --debug --pid-file /tmp/flutter.pid
 
 run-release:
-	cd cyberwow && \
+	cd lolnode && \
 	flutter run --release --pid-file /tmp/flutter.pid
 
 build:
-	cd cyberwow && \
+	cd lolnode && \
 	flutter build apk --target-platform android-arm64
 
 build-bundle:
-	cd cyberwow && \
+	cd lolnode && \
 	flutter build appbundle --target-platform android-arm64
 
 build-debug:
-	cd cyberwow && \
+	cd lolnode && \
 	flutter build appbundle --debug --target-platform android-arm64
 
 install: build
-	cd cyberwow && \
+	cd lolnode && \
   flutter install
 
-# build wownero android binary
+# build lolnero android binary
 
 script := etc/scripts/build-external-libs
 
-wow: clean-external-libs collect-wownero build
+lol: clean-external-libs collect-lolnero build
 
 clean-external-libs:
 	$(script)/clean.sh
@@ -94,15 +94,19 @@ sodium: toolchain
 	$(script)/sodium/fetch.sh
 	$(script)/sodium/build.sh
 
-toolchain-wow:
-	$(script)/toolchain-wow/import.sh
-	$(script)/toolchain-wow/patch.sh
+toolchain-lol:
+	$(script)/toolchain-lol/import.sh
+	$(script)/toolchain-lol/patch.sh
 
-wownero: openssl boost sodium toolchain-wow
-	$(script)/wownero/fetch.sh
-	$(script)/wownero/build.sh
+lolnero: openssl boost sodium toolchain-lol
+	$(script)/lolnero/fetch.sh
+	$(script)/lolnero/build.sh
 
-collect-wownero: wownero
+lolnero-raw:
+	$(script)/lolnero/fetch.sh
+	$(script)/lolnero/build.sh
+
+collect-lolnero: lolnero
 	$(script)/collect.sh
 
 # etc

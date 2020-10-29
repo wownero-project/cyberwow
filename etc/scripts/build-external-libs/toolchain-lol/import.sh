@@ -30,73 +30,31 @@
 # THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 set -e
-
 source etc/scripts/build-external-libs/env.sh
 
-build_root=$BUILD_ROOT
-src_root=$BUILD_ROOT_SRC
 
-build_root_wow=$BUILD_ROOT_WOW
+build_root=$BUILD_ROOT_LOL
+# PATH=$ANDROID_NDK_ROOT_LOL/build/tools/:$PATH
 
-name=wownero
+mkdir -p $build_root
+ndk_mirror=$build_root/mirror
+cp -vr $ANDROID_NDK_ROOT_LOL/ $ndk_mirror
+chmod u+w -R $ndk_mirror
 
-cd $src_root/${name}
+args="--api 23 --stl=libc++"
 
 archs=(arm64)
+
 for arch in ${archs[@]}; do
-    extra_cmake_flags=""
-    case ${arch} in
-        "arm")
-            target_host=arm-linux-androideabi
-            ;;
-        "arm64")
-            target_host=aarch64-linux-android
-            ;;
-        "x86_64")
-            target_host=x86_64-linux-android
-            ;;
-        *)
-            exit 16
-            ;;
-    esac
+    bin=$ndk_mirror/build/tools/make_standalone_toolchain.py
 
-    # PREFIX=$build_root/build/${name}/$arch
-    PREFIX=$build_root/build/$arch
-    echo "building for ${arch}"
+    out=$build_root/tool/$arch
+    echo "installing toolchain for ${arch} into $out"
 
-    mkdir -p $PREFIX/dlib/
-    rm -f $PREFIX/dlib/libtinfo.so.5
-    ln -s $PATH_NCURSES/lib/libncursesw.so.5 $PREFIX/dlib/libtinfo.so.5
-
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PREFIX/dlib
-    export TOOLCHAIN_DIR=`realpath $build_root_wow/tool/${arch}`
-    export PATH=$PATH:$build_root/host/bin
-
-    mkdir -p build/release
-    pushd .
-    cd build/release
-    (
-        CMAKE_INCLUDE_PATH="${PREFIX}/include" \
-        CMAKE_LIBRARY_PATH="${PREFIX}/lib" \
-        CC=aarch64-linux-android-clang \
-        CXX=aarch64-linux-android-clang++ \
-        cmake \
-          -D BUILD_TESTS=OFF \
-          -D ARCH="armv8-a" \
-          -D STATIC=ON \
-          -D BUILD_64=ON \
-          -D CMAKE_BUILD_TYPE=release \
-          -D ANDROID=true \
-          -D INSTALL_VENDORED_LIBUNBOUND=ON \
-          -D BUILD_TAG="android-armv8" \
-          -D CMAKE_SYSTEM_NAME="Android" \
-          -D CMAKE_ANDROID_STANDALONE_TOOLCHAIN="${TOOLCHAIN_DIR}" \
-          -D CMAKE_ANDROID_ARCH_ABI="arm64-v8a" \
-          -D MANUAL_SUBMODULES=ON \
-          ../.. && make -j${NPROC} daemon
-    )
-    popd
+    if [ ! -d "$out" ]; then
+        echo "installing $arch"
+        echo $bin $args --arch $arch --install-dir $out
+        $bin $args --arch $arch --install-dir $out
+    fi
 
 done
-
-exit 0

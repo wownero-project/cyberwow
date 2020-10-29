@@ -33,13 +33,70 @@ set -e
 
 source etc/scripts/build-external-libs/env.sh
 
-build_root=$BUILD_ROOT_WOW
-PATH=$ANDROID_NDK_ROOT_WOW/build/tools/:$PATH
+build_root=$BUILD_ROOT
+src_root=$BUILD_ROOT_SRC
+
+build_root_lol=$BUILD_ROOT_LOL
+
+name=lolnero
+
+cd $src_root/${name}
 
 archs=(arm64)
-
 for arch in ${archs[@]}; do
-    cd $build_root/tool/$arch/sysroot && \
-    mkdir -p var/empty/include/android && \
-    cp usr/include/android/api-level.h var/empty/include/android/
+    extra_cmake_flags=""
+    case ${arch} in
+        "arm")
+            target_host=arm-linux-androideabi
+            ;;
+        "arm64")
+            target_host=aarch64-linux-android
+            ;;
+        "x86_64")
+            target_host=x86_64-linux-android
+            ;;
+        *)
+            exit 16
+            ;;
+    esac
+
+    # PREFIX=$build_root/build/${name}/$arch
+    PREFIX=$build_root/build/$arch
+    echo "building for ${arch}"
+
+    mkdir -p $PREFIX/dlib/
+    rm -f $PREFIX/dlib/libtinfo.so.5
+    ln -s $PATH_NCURSES/lib/libncursesw.so.5 $PREFIX/dlib/libtinfo.so.5
+
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PREFIX/dlib
+    export TOOLCHAIN_DIR=`realpath $build_root_lol/tool/${arch}`
+    export PATH=$PATH:$build_root/host/bin
+
+    mkdir -p build/release
+    pushd .
+    cd build/release
+    (
+        CMAKE_INCLUDE_PATH="${PREFIX}/include" \
+        CMAKE_LIBRARY_PATH="${PREFIX}/lib" \
+        CC=aarch64-linux-android-clang \
+        CXX=aarch64-linux-android-clang++ \
+        cmake \
+          -D BUILD_TESTS=OFF \
+          -D ARCH="armv8-a" \
+          -D STATIC=ON \
+          -D BUILD_64=ON \
+          -D CMAKE_BUILD_TYPE=release \
+          -D ANDROID=true \
+          -D INSTALL_VENDORED_LIBUNBOUND=ON \
+          -D BUILD_TAG="android-armv8" \
+          -D CMAKE_SYSTEM_NAME="Android" \
+          -D CMAKE_ANDROID_STANDALONE_TOOLCHAIN="${TOOLCHAIN_DIR}" \
+          -D CMAKE_ANDROID_ARCH_ABI="arm64-v8a" \
+          -D MANUAL_SUBMODULES=ON \
+          ../.. && make -j${NPROC} daemon
+    )
+    popd
+
 done
+
+exit 0

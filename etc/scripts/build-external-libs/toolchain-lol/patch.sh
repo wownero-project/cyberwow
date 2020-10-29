@@ -33,17 +33,13 @@ set -e
 
 source etc/scripts/build-external-libs/env.sh
 
-build_root=$BUILD_ROOT_WOW
-PATH=$ANDROID_NDK_ROOT_WOW/build/tools/:$PATH
+build_root=$BUILD_ROOT_LOL
+PATH=$ANDROID_NDK_ROOT_LOL/build/tools/:$PATH
 
-args="--api 23 --stl=libc++"
 archs=(arm64)
 
 for arch in ${archs[@]}; do
-
-    if [ ! -d "$build_root/tool/$arch" ]; then
-        echo "installing $arch"
-        make_standalone_toolchain.py $args --arch $arch --install-dir $build_root/tool/$arch
-    fi
-
+    cd $build_root/tool/$arch/sysroot && \
+    mkdir -p var/empty/include/android && \
+    cp usr/include/android/api-level.h var/empty/include/android/
 done

@@ -40,10 +40,14 @@ args="--api 29 --stl=libc++"
 archs=(arm64)
 
 for arch in ${archs[@]}; do
+    bin=$ANDROID_NDK_ROOT/build/tools/make_standalone_toolchain.py
 
-    if [ ! -d "$build_root/tool/$arch" ]; then
+    out=$build_root/tool/$arch
+    echo "installing toolchain for ${arch} into $out"
+
+    if [ ! -d "$out" ]; then
         echo "installing $arch"
-        make_standalone_toolchain.py $args --arch $arch --install-dir $build_root/tool/$arch
+        $bin $args --arch $arch --install-dir $out
     fi
 
 done

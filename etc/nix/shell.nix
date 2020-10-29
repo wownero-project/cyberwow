@@ -46,10 +46,20 @@ let
     xkeyboard_config
   ]
 
-; ndk-r17c = (nixpkgs.androidenv.composeAndroidPackages
-  {
-    ndkVersion = "17.2.4988734"
-  ; }).ndk-bundle
+# ; ndk-r17c = (nixpkgs.androidenv.composeAndroidPackages
+#   {
+#     ndkVersion = "17.2.4988734"
+#   ; }).ndk-bundle
+
+; ndk-r17c =
+    let
+      version = "r17c"
+    ; in
+    nixpkgs.fetchzip
+    {
+      url = "https://dl.google.com/android/repository/android-ndk-${version}-linux-x86_64.zip"
+    ; sha256 = "02q1hy423syl868jdyaxjm44hn59cmni5019r811vinagvq3m7qi"
+    ; }
 
 ; ndk-r21b =
     let
@@ -121,7 +131,7 @@ let
 with nixpkgs;
 
 (buildFHSUserEnv {
-  name = "cyberwow-env"
+  name = "lolnode-env"
 ; targetPkgs = pkgs: (with pkgs;
   [
     bash
@@ -155,6 +165,8 @@ with nixpkgs;
     pkgconfig
     cmake
     ccache
+
+    python2
   ]
   ++ android-studio-deps
   )
@@ -181,7 +193,7 @@ with nixpkgs;
     export SRC_BOOST=${boost-source}
     export SRC_SODIUM=${sodium-source}
     export SRC_RAPIDJSON_DIR=${nixpkgs.rapidjson.src}
-    export SRC_WOWNERO_DIR=${lolnero-source}
+    export SRC_LOLNERO_DIR=${lolnero-source}
 
     export PATH_NCURSES=${nixpkgs.ncurses5}
     export PATH
@@ -189,8 +201,8 @@ with nixpkgs;
     export _JAVA_AWT_WM_NONREPARENTING=1
     export DART_VM_OPTIONS=--root-certs-file=/etc/ssl/certs/ca-certificates.crt
 
-    export ANDROID_NDK_VERSION_WOW=r17c
-    export ANDROID_NDK_ROOT_WOW=${ndk-r17c}/libexec/android-sdk/ndk-bundle
+    export ANDROID_NDK_VERSION_LOL=r17c
+    export ANDROID_NDK_ROOT_LOL=${ndk-r17c}
 
     export ZSH_INIT=${nixpkgs.oh-my-zsh}/share/oh-my-zsh/oh-my-zsh.sh
     exec zsh

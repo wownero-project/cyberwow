@@ -35,23 +35,23 @@ source etc/scripts/build-external-libs/env.sh
 
 cd $BUILD_ROOT_SRC
 
-name=wownero
-version=v0.8.0.0
+name=lolnero
+version=v0.5.0.0
 # version=dev-v0.8
 githash=1271a7e3a97c0d81816b401627aefb6c6697d0b3
-out=wownero
+out=lolnero
 
 chmod u+w -f -R $out || true
 
 rm -rf $out
 
-if [ ! -z $SRC_WOWNERO_DIR ]; then
+if [ ! -z $SRC_LOLNERO_DIR ]; then
     echo "using pre-fetched $name"
-    rsync -av --no-perms --no-owner --no-group --delete $SRC_WOWNERO_DIR/* $out
+    rsync -av --no-perms --no-owner --no-group --delete $SRC_LOLNERO_DIR/* $out
     chmod u+w -R $out/external
     cd $name
 else
-    git clone --depth 1 https://github.com/wownero/wownero.git -b $version
+    git clone --depth 1 https://gitlab.com/fuwa/lolnero.git -b $version
     cd $name
     test `git rev-parse HEAD` = $githash || exit 1
 fi
