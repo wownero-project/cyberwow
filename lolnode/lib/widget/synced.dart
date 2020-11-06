@@ -63,7 +63,7 @@ Widget summary(BuildContext context, SyncedState state) {
                   duration: Duration(milliseconds: 500),
                   child: Text(
                     height,
-                    style: Theme.of(context).textTheme.display1,
+                    style: Theme.of(context).textTheme.headline4,
                     key: ValueKey<int>(state.height),
                   ),
                 ),
@@ -83,7 +83,7 @@ Widget summary(BuildContext context, SyncedState state) {
             duration: Duration(milliseconds: 500),
             child: Text(
               txNotice,
-              style: Theme.of(context).textTheme.body2,
+              style: Theme.of(context).textTheme.bodyText1,
               key: ValueKey<int>(poolLength),
             ),
           ),
@@ -105,7 +105,7 @@ Widget summary(BuildContext context, SyncedState state) {
   );
 }
 
-Widget rpcView(BuildContext context, String title, String body) {
+Widget rpcView(BuildContext context, String headline6, String body) {
   return Container(
     padding: const EdgeInsets.all(10.0),
     child: Align(
@@ -124,8 +124,8 @@ Widget rpcView(BuildContext context, String title, String body) {
                         margin: const EdgeInsets.only(bottom: 15),
                       ),
                       Text(
-                        title,
-                        style: Theme.of(context).textTheme.display1,
+                        headline6,
+                        style: Theme.of(context).textTheme.headline4,
                       ),
                       Container(
                         height: 1,
@@ -134,7 +134,7 @@ Widget rpcView(BuildContext context, String title, String body) {
                       ),
                       Text(
                         body,
-                        style: Theme.of(context).textTheme.body2,
+                        style: Theme.of(context).textTheme.bodyText1,
                       )
                     ],
                   )))
@@ -163,7 +163,7 @@ Widget getConnections(BuildContext context, SyncedState state) {
   return rpcView(context, 'peers' + subTitle, state.getConnectionsCache);
 }
 
-Widget terminalView(BuildContext context, String title, SyncedState state) {
+Widget terminalView(BuildContext context, String headline6, SyncedState state) {
   final input = TextFormField(
     controller: state.textController,
     textInputAction: TextInputAction.next,
@@ -228,7 +228,7 @@ Widget terminalView(BuildContext context, String title, SyncedState state) {
                     children: <Widget>[
                       Text(
                         state.stdout.join('\n'),
-                        style: Theme.of(context).textTheme.body2,
+                        style: Theme.of(context).textTheme.bodyText1,
                       )
                     ],
                   ))),

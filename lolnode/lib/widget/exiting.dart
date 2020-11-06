@@ -27,8 +27,8 @@ Widget build(BuildContext context, ExitingState state) {
   return Scaffold(
     // appBar: AppBar
     // (
-    //   // title: Text(widget.title),
-    //   title: Text('CyberWOW'),
+    //   // headline6: Text(widget.headline6),
+    //   headline6: Text('CyberWOW'),
     // ),
     body: Container(
       // padding: const EdgeInsets.all(10.0),
@@ -44,7 +44,7 @@ Widget build(BuildContext context, ExitingState state) {
                     reverse: true,
                     child: Text(
                       state.stdout.join(),
-                      style: Theme.of(context).textTheme.body1,
+                      style: Theme.of(context).textTheme.bodyText2,
                     )))
           ],
         ),

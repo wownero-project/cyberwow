@@ -26,8 +26,8 @@ import '../state.dart';
 Widget build(BuildContext context, LoadingState state) {
   return Scaffold(
     // appBar: AppBar(
-    //   // title: Text(widget.title),
-    //   title: Text('WOW'),
+    //   // headline6: Text(widget.headline6),
+    //   headline6: Text('WOW'),
     // ),
     body: Container(
       padding: const EdgeInsets.all(40.0),
@@ -41,7 +41,7 @@ Widget build(BuildContext context, LoadingState state) {
             ),
             Text(
               state.status,
-              style: Theme.of(context).textTheme.title,
+              style: Theme.of(context).textTheme.headline6,
             ),
             Spacer(
               flex: 1,

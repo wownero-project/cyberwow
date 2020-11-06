@@ -26,63 +26,49 @@ import 'prototype.dart';
 // const crtGreen = Color.fromRGBO(0, 255, 102, 1);
 const crtGreen = Color.fromRGBO(51, 255, 51, 0.9);
 
-final _theme = ThemeData
-(
+final _theme = ThemeData(
   brightness: Brightness.dark,
-
   primaryColor: crtGreen,
   hintColor: Colors.yellow,
   accentColor: crtGreen,
   cursorColor: crtGreen,
-
   backgroundColor: Colors.black,
   scaffoldBackgroundColor: Colors.black,
-
-  textTheme: TextTheme
-  (
-    display1: TextStyle
-    (
+  textTheme: TextTheme(
+    headline4: TextStyle(
       fontFamily: 'RobotoMono',
       fontSize: 35,
       fontWeight: FontWeight.bold,
     ),
-    display2: TextStyle
-    (
+    headline3: TextStyle(
       fontFamily: 'RobotoMono',
       fontSize: 22,
     ),
-    title: TextStyle
-    (
+    headline6: TextStyle(
       fontFamily: 'VT323',
       fontSize: 22,
     ),
-    subhead: TextStyle
-    (
+    subtitle1: TextStyle(
       fontFamily: 'RobotoMono',
       fontSize: 17,
       fontWeight: FontWeight.bold,
     ),
-    body1: TextStyle
-    (
+    bodyText2: TextStyle(
       fontFamily: 'VT323',
       fontSize: 17,
       height: 1,
     ),
-    body2: TextStyle
-    (
+    bodyText1: TextStyle(
       fontFamily: 'RobotoMono',
       fontSize: 12.5,
     ),
-  ).apply
-  (
+  ).apply(
     bodyColor: crtGreen,
     displayColor: crtGreen,
   ),
 );
 
-
-final config = CryptoConfig
-(
+final config = CryptoConfig(
   'liblolnerod.so',
   'wownerod',
   'Is this a test, sir?',

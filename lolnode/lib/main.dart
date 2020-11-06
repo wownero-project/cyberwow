@@ -51,14 +51,14 @@ class CyberWOW_App extends StatelessWidget {
       title: 'CyberWOW',
       theme: config.c.theme,
       darkTheme: config.c.theme,
-      home: CyberWOW_Page(title: 'CyberWOW'),
+      home: CyberWOW_Page(headline6: 'CyberWOW'),
     );
   }
 }
 
 class CyberWOW_Page extends StatefulWidget {
-  CyberWOW_Page({Key key, this.title}) : super(key: key);
-  final String title;
+  CyberWOW_Page({Key key, this.headline6}) : super(key: key);
+  final String headline6;
 
   @override
   _CyberWOW_PageState createState() => _CyberWOW_PageState();

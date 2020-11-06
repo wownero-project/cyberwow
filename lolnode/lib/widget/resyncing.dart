@@ -36,7 +36,7 @@ Widget build(BuildContext context, ReSyncingState state) {
         flex: 5,
         child: Text(
           state.stdout.last,
-          style: Theme.of(context).textTheme.body1,
+          style: Theme.of(context).textTheme.bodyText2,
         )),
   ];
 
