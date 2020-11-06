@@ -48,10 +48,10 @@ class CyberWOW_App extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
 
     return MaterialApp(
-      title: 'CyberWOW',
+      title: 'L node',
       theme: config.c.theme,
       darkTheme: config.c.theme,
-      home: CyberWOW_Page(headline6: 'CyberWOW'),
+      home: CyberWOW_Page(headline6: 'L node'),
     );
   }
 }
