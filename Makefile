@@ -109,6 +109,9 @@ lolnero-raw:
 collect-lolnero: lolnero
 	$(script)/collect.sh
 
+collect-lolnero-raw: lolnero-raw
+	$(script)/collect.sh
+
 # etc
 
 remove-exif:
