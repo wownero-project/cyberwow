@@ -64,12 +64,12 @@ Future<List<Map<String, dynamic>>> getTransactionPoolSimple() async {
       final _txid = x['id_hash'];
 
       if (txInOutCache[_txid] == null) {
-        final String _tx_json = x['tx_json'];
-        final _tx_json_decoded = await compute(jsonDecode, _tx_json);
+        final String _txJson = x['tx_json'];
+        final _txJsonDecoded = await compute(jsonDecode, _txJson);
 
         final _inOut = {
-          'vin': _tx_json_decoded['vin'].length,
-          'vout': _tx_json_decoded['vout'].length,
+          'vin': _txJsonDecoded['vin'].length,
+          'vout': _txJsonDecoded['vout'].length,
         };
 
         final _inOutString =

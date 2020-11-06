@@ -38,10 +38,10 @@ void main() {
   Logger.root.onRecord.listen((LogRecord rec) {
     print('${rec.level.name}: ${rec.time}: ${rec.message}');
   });
-  runApp(CyberWOW_App());
+  runApp(LNodeApp());
 }
 
-class CyberWOW_App extends StatelessWidget {
+class LNodeApp extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
@@ -51,21 +51,20 @@ class CyberWOW_App extends StatelessWidget {
       title: 'L node',
       theme: config.c.theme,
       darkTheme: config.c.theme,
-      home: CyberWOW_Page(headline6: 'L node'),
+      home: LNodePage(headline6: 'L node'),
     );
   }
 }
 
-class CyberWOW_Page extends StatefulWidget {
-  CyberWOW_Page({Key key, this.headline6}) : super(key: key);
+class LNodePage extends StatefulWidget {
+  LNodePage({Key key, this.headline6}) : super(key: key);
   final String headline6;
 
   @override
-  _CyberWOW_PageState createState() => _CyberWOW_PageState();
+  _LNodePageState createState() => _LNodePageState();
 }
 
-class _CyberWOW_PageState extends State<CyberWOW_Page>
-    with WidgetsBindingObserver {
+class _LNodePageState extends State<LNodePage> with WidgetsBindingObserver {
   // AppState _state = LoadingState("init...");
   static const _channel = const MethodChannel('send-intent');
 
@@ -74,17 +73,17 @@ class _CyberWOW_PageState extends State<CyberWOW_Page>
 
   bool _exiting = false;
 
-  final StreamController<String> inputStreamController = StreamController();
+  final StreamController<String> _inputStreamController = StreamController();
 
   Future<String> getInitialIntent() async {
     final text = await _channel.invokeMethod('getInitialIntent');
-    log.fine('getInitialIntent: ${text}');
+    log.fine('getInitialIntent: $text');
     return text;
   }
 
   @override
   void didChangeAppLifecycleState(final AppLifecycleState state) {
-    log.fine('app cycle: ${state}');
+    log.fine('app cycle: $state');
     setState(() {
       _notification = state;
     });
@@ -93,6 +92,7 @@ class _CyberWOW_PageState extends State<CyberWOW_Page>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _inputStreamController.close();
     super.dispose();
   }
 
@@ -127,13 +127,13 @@ class _CyberWOW_PageState extends State<CyberWOW_Page>
     final syncing = process
         .runBinary(
           config.c.outputBin,
-          input: inputStreamController.stream,
+          input: _inputStreamController.stream,
           shouldExit: _isExiting,
           userArgs: _userArgs,
         )
         .asBroadcastStream();
 
-    await _syncingState.next(inputStreamController.sink, syncing);
+    await _syncingState.next(_inputStreamController.sink, syncing);
 
     bool exited = false;
     bool validState = true;
@@ -176,7 +176,7 @@ class _CyberWOW_PageState extends State<CyberWOW_Page>
   @override
   void initState() {
     super.initState();
-    log.fine("CyberWOW_PageState initState");
+    log.fine("LNodePageState initState");
 
     WidgetsBinding.instance.addObserver(this);
 
@@ -189,11 +189,11 @@ class _CyberWOW_PageState extends State<CyberWOW_Page>
   }
 
   Future<bool> _exitApp(final BuildContext context) async {
-    log.info("CyberWOW_PageState _exitApp");
+    log.info("LNodePageState _exitApp");
     WidgetsBinding.instance.removeObserver(this);
 
     _exiting = true;
-    inputStreamController.sink.add('exit');
+    _inputStreamController.sink.add('exit');
 
     await Future.delayed(const Duration(seconds: 5));
 

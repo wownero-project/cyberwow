@@ -149,8 +149,8 @@ Map<String, dynamic> getInfoView(Map<String, dynamic> x) {
         }
       case 'start_time':
         {
-          final _receive_time = DateTime.fromMillisecondsSinceEpoch(v * 1000);
-          final _diff = DateTime.now().difference(_receive_time);
+          final _receiveTime = DateTime.fromMillisecondsSinceEpoch(v * 1000);
+          final _diff = DateTime.now().difference(_receiveTime);
 
           format(Duration d) => d.toString().split('.').first.padLeft(8, "0");
           return MapEntry('uptime', format(_diff));
