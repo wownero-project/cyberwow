@@ -122,7 +122,7 @@ let
     {
       url = "https://gitlab.com/fuwa/lolnero.git"
     ; rev = "e9d9b9ff"
-    ; sha256 = "0i6dgrdrgbds3ivynr7wgvxqcby5v83056h1scgcxk6g5047ldz0"
+      sha256 = "19rcrlmap20ix4nnqzbm7y8hz00q3785qjlis20yvqc6592sjirq";
     ; fetchSubmodules = false
     ; }
 
