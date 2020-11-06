@@ -32,13 +32,12 @@ import 'prototype.dart';
 import 'synced.dart';
 import 'exiting.dart';
 
-
 class SyncingState extends AppState {
   final Queue<String> stdout = Queue();
 
   bool synced = false;
 
-  SyncingState(appHook) : super (appHook);
+  SyncingState(appHook) : super(appHook);
 
   void append(final String msg) {
     stdout.addLast(msg);
@@ -48,10 +47,8 @@ class SyncingState extends AppState {
     syncState();
   }
 
-  Future<AppState> next
-  (
-    StreamSink<String> processInput, Stream<String> processOutput
-  ) async {
+  Future<AppState> next(
+      StreamSink<String> processInput, Stream<String> processOutput) async {
     log.fine("Syncing next");
 
     Future<void> printStdout() async {
@@ -65,7 +62,8 @@ class SyncingState extends AppState {
     }
 
     Future<void> checkSync() async {
-      await for (final _null in refresh.pull(appHook.getNotification, 'syncingState')) {
+      await for (final _
+          in refresh.pull(appHook.getNotification, 'syncingState')) {
         log.finer('SyncingState: checkSync loop');
 
         if (appHook.isExiting()) {
@@ -89,10 +87,7 @@ class SyncingState extends AppState {
     await checkSync();
 
     if (appHook.isExiting()) {
-      ExitingState _next = ExitingState
-      (
-        appHook, stdout, processOutput
-      );
+      ExitingState _next = ExitingState(appHook, stdout, processOutput);
       return moveState(_next);
     }
 
@@ -101,9 +96,12 @@ class SyncingState extends AppState {
     // processInput.add('exit');
 
     final _height = await rpc.height();
-    SyncedState _next = SyncedState
-    (
-      appHook, stdout, processInput, processOutput, 1,
+    SyncedState _next = SyncedState(
+      appHook,
+      stdout,
+      processInput,
+      processOutput,
+      1,
     );
     _next.height = _height;
     return moveState(_next);

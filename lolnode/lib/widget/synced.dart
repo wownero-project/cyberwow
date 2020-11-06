@@ -22,10 +22,7 @@ along with CyberWOW.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'dart:collection';
-
 import '../state.dart';
-import '../config.dart' as config;
 import '../helper.dart';
 import '../logging.dart';
 
@@ -34,92 +31,73 @@ Widget summary(BuildContext context, SyncedState state) {
   final onFire = state.getTransactionPool.length >= 10;
   final onFireNotice = onFire ? ' 🔥' : '';
   final poolLength = state.getTransactionPool.length;
-  final poolLengthNotice = poolLength > 1 ? '[${poolLength}] ' : '';
-  final txNotice = state.getTransactionPool.isEmpty ?
-    '' : poolLengthNotice + state.getTransactionPool.first['id_hash'].substring(0, 6) + ' ...';
+  final poolLengthNotice = poolLength > 1 ? '[$poolLength] ' : '';
+  final txNotice = state.getTransactionPool.isEmpty
+      ? ''
+      : poolLengthNotice +
+          state.getTransactionPool.first['id_hash'].substring(0, 6) +
+          ' ...';
 
-  return Container
-  (
+  return Container(
     padding: EdgeInsets.only(bottom: 10.0),
-    child: Align
-    (
+    child: Align(
       alignment: Alignment.center,
-      child: Column
-      (
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>
-        [
-          Spacer
-          (
+        children: <Widget>[
+          Spacer(
             flex: 17,
           ),
-          Image.asset
-          ('assets/lolnode_icon.png',
+          Image.asset(
+            'assets/lolnode_icon.png',
             height: 220,
           ),
-          Spacer
-          (
+          Spacer(
             flex: 7,
           ),
-          Expanded
-          (
-            flex: 15,
-            child: Row
-            (
-              children: <Widget>
-              [
+          Expanded(
+              flex: 15,
+              child: Row(children: <Widget>[
                 Spacer(),
-                AnimatedSwitcher
-                (
+                AnimatedSwitcher(
                   duration: Duration(milliseconds: 500),
-                  child: Text
-                  (
+                  child: Text(
                     height,
                     style: Theme.of(context).textTheme.display1,
                     key: ValueKey<int>(state.height),
                   ),
                 ),
-                AnimatedSwitcher
-                (
+                AnimatedSwitcher(
                   duration: Duration(milliseconds: 500),
-                  child: Text
-                  (
+                  child: Text(
                     onFireNotice,
-                    style: TextStyle
-                    (
+                    style: TextStyle(
                       fontSize: 25,
                     ),
                     key: ValueKey<int>(onFire ? 0 : 1),
                   ),
                 ),
                 Spacer(),
-              ]
-            )
-          ),
-          AnimatedSwitcher
-          (
+              ])),
+          AnimatedSwitcher(
             duration: Duration(milliseconds: 500),
-            child: Text
-            (
+            child: Text(
               txNotice,
               style: Theme.of(context).textTheme.body2,
               key: ValueKey<int>(poolLength),
             ),
           ),
-          Spacer
-          (
+          Spacer(
             flex: 1,
           ),
-          SizedBox
-          (
+          SizedBox(
             height: 20.0,
             width: 20.0,
-            child: (state.connected) ?
-            Container() :
-            CircularProgressIndicator
-            (
-              strokeWidth: 2,
-            ),
+            child: (state.connected)
+                ? Container()
+                : CircularProgressIndicator(
+                    strokeWidth: 2,
+                  ),
           ),
         ],
       ),
@@ -128,59 +106,48 @@ Widget summary(BuildContext context, SyncedState state) {
 }
 
 Widget rpcView(BuildContext context, String title, String body) {
-  return Container
-  (
+  return Container(
     padding: const EdgeInsets.all(10.0),
-    child: Align
-    (
+    child: Align(
       alignment: Alignment.topLeft,
-      child: Column
-      (
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>
-        [
-          Expanded
-          (
-            flex: 1,
-            child: SingleChildScrollView
-            (
-              scrollDirection: Axis.vertical,
-              child: Column
-              (
-                children: <Widget>
-                [
-
-                  Container(
-                    height: 0,
-                    margin: const EdgeInsets.only(bottom: 15),
-                  ),
-                  Text
-                  (
-                    title,
-                    style: Theme.of(context).textTheme.display1,
-                  ),
-                  Container(
-                    height: 1,
-                    color: Theme.of(context).primaryColor,
-                    margin: const EdgeInsets.only(bottom: 20, top: 20),
-                  ),
-                  Text
-                  (
-                    body,
-                    style: Theme.of(context).textTheme.body2,
-                  )
-                ],
-              )
-            )
-          )
+        children: <Widget>[
+          Expanded(
+              flex: 1,
+              child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        height: 0,
+                        margin: const EdgeInsets.only(bottom: 15),
+                      ),
+                      Text(
+                        title,
+                        style: Theme.of(context).textTheme.display1,
+                      ),
+                      Container(
+                        height: 1,
+                        color: Theme.of(context).primaryColor,
+                        margin: const EdgeInsets.only(bottom: 20, top: 20),
+                      ),
+                      Text(
+                        body,
+                        style: Theme.of(context).textTheme.body2,
+                      )
+                    ],
+                  )))
         ],
       ),
     ),
   );
 }
 
-Widget getInfo(BuildContext context, SyncedState state) => rpcView(context, 'info', state.getInfoCache);
-Widget syncInfo(BuildContext context, SyncedState state) => rpcView(context, 'sync info', pretty(state.syncInfo));
+Widget getInfo(BuildContext context, SyncedState state) =>
+    rpcView(context, 'info', state.getInfoCache);
+Widget syncInfo(BuildContext context, SyncedState state) =>
+    rpcView(context, 'sync info', pretty(state.syncInfo));
 
 Widget getTransactionPool(BuildContext context, SyncedState state) {
   final pool = state.getTransactionPool;
@@ -196,28 +163,21 @@ Widget getConnections(BuildContext context, SyncedState state) {
   return rpcView(context, 'peers' + subTitle, state.getConnectionsCache);
 }
 
-
-
 Widget terminalView(BuildContext context, String title, SyncedState state) {
-  final input = TextFormField
-  (
+  final input = TextFormField(
     controller: state.textController,
     textInputAction: TextInputAction.next,
     autofocus: true,
     autocorrect: false,
     enableSuggestions: false,
     keyboardType: TextInputType.visiblePassword,
-    decoration:
-    InputDecoration
-    (
+    decoration: InputDecoration(
       // border: UnderlineInputBorder // OutlineInputBorder
       // (
       // ),
       // hintText: 'WOW',
-      enabledBorder: UnderlineInputBorder
-      (
-        borderSide: BorderSide
-        (
+      enabledBorder: UnderlineInputBorder(
+        borderSide: BorderSide(
           color: Theme.of(context).primaryColor,
         ),
       ),
@@ -235,58 +195,44 @@ Widget terminalView(BuildContext context, String title, SyncedState state) {
         final tail = words.sublist(1);
         final guessHead = head.replaceAll('-', '_');
 
-        return [ guessHead, ...tail ].join(' ');
+        return [guessHead, ...tail].join(' ');
       }
 
       final _text = state.textController.text.trim();
       final line = autoReplace(_text);
 
       if (line.isNotEmpty) {
-        log.finer('terminal input: ${line}');
+        log.finer('terminal input: $line');
         state.appendInput(line);
         state.textController.clear();
-      }
-      else {
+      } else {
         state.textController.clear();
         SystemChannels.textInput.invokeMethod('TextInput.hide');
       }
     },
   );
 
-  return Container
-  (
+  return Container(
     // padding: const EdgeInsets.all(10.0),
-    child: Align
-    (
+    child: Align(
       alignment: Alignment.topLeft,
-      child: Column
-      (
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>
-        [
-          Expanded
-          (
-            flex: 1,
-            child: SingleChildScrollView
-            (
-              scrollDirection: Axis.vertical,
-              reverse: true,
-              child: Column
-              (
-                children: <Widget>
-                [
-
-                  Text
-                  (
-                    state.stdout.join('\n'),
-                    style: Theme.of(context).textTheme.body2,
-                  )
-                ],
-              )
-            )
-          ),
-          Container
-          (
+        children: <Widget>[
+          Expanded(
+              flex: 1,
+              child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  reverse: true,
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        state.stdout.join('\n'),
+                        style: Theme.of(context).textTheme.body2,
+                      )
+                    ],
+                  ))),
+          Container(
             margin: const EdgeInsets.all(10.0),
             child: input,
           ),
@@ -296,10 +242,10 @@ Widget terminalView(BuildContext context, String title, SyncedState state) {
   );
 }
 
+Widget terminal(BuildContext context, SyncedState state) =>
+    terminalView(context, 'terminal', state);
 
-Widget terminal(BuildContext context, SyncedState state) => terminalView(context, 'terminal', state);
-
-Widget pageView (BuildContext context, SyncedState state) {
+Widget pageView(BuildContext context, SyncedState state) {
   void _onPageChanged(int pageIndex) {
     if (pageIndex != 0) {
       SystemChannels.textInput.invokeMethod('TextInput.hide');
@@ -307,11 +253,10 @@ Widget pageView (BuildContext context, SyncedState state) {
     state.onPageChanged(pageIndex);
   }
 
-  return PageView (
+  return PageView(
     controller: state.pageController,
     onPageChanged: _onPageChanged,
-    children:
-    [
+    children: [
       terminal(context, state),
       summary(context, state),
       getTransactionPool(context, state),
@@ -323,8 +268,5 @@ Widget pageView (BuildContext context, SyncedState state) {
 }
 
 Widget build(BuildContext context, SyncedState state) {
-  return Scaffold
-  (
-    body: pageView(context, state)
-  );
+  return Scaffold(body: pageView(context, state));
 }

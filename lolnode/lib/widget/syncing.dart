@@ -22,41 +22,30 @@ along with CyberWOW.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:flutter/material.dart';
 
 import '../state.dart';
-import '../config.dart' as config;
 
 Widget build(BuildContext context, SyncingState state) {
-  return Scaffold
-  (
+  return Scaffold(
     // appBar: AppBar
     // (
     //   // title: Text(widget.title),
     //   title: Text('CyberWOW'),
     // ),
-    body: Container
-    (
+    body: Container(
       // padding: const EdgeInsets.all(10.0),
-      child: Align
-      (
+      child: Align(
         alignment: Alignment.topLeft,
-        child: Column
-        (
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>
-          [
-            Expanded
-            (
-              flex: 1,
-              child: SingleChildScrollView
-              (
-                scrollDirection: Axis.vertical,
-                reverse: true,
-                child: Text
-                (
-                  state.stdout.join('\n'),
-                  style: Theme.of(context).textTheme.body1,
-                )
-              )
-            ),
+          children: <Widget>[
+            Expanded(
+                flex: 1,
+                child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    reverse: true,
+                    child: Text(
+                      state.stdout.join('\n'),
+                      style: Theme.of(context).textTheme.body1,
+                    ))),
           ],
         ),
       ),

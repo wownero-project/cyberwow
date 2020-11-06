@@ -25,22 +25,20 @@ import 'dart:math';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
-import 'package:intl/intl.dart';
 
 import '../../../config.dart' as config;
 import '../../../helper.dart';
 import '../../../logging.dart';
 
 Future<http.Response> rpc2(final String method) async {
-  final url = 'http://${config.host}:${config.c.port}/${method}';
+  final url = 'http://${config.host}:${config.c.port}/$method';
 
   try {
-    final response = await http.post
-    ( url,
+    final response = await http.post(
+      url,
     );
     return response;
-  }
-  catch (e) {
+  } catch (e) {
     log.warning(e);
     return null;
   }
@@ -57,7 +55,7 @@ Future<String> rpc2String(final String method, {final String field}) async {
     return '';
   } else {
     final _body = await compute(jsonDecode, response.body);
-    final _field = field == null ? _body: _body[field];
+    final _field = field == null ? _body : _body[field];
 
     return pretty(_field);
   }

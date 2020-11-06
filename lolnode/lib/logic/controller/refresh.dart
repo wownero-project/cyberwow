@@ -19,21 +19,19 @@ along with CyberWOW.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'package:logging/logging.dart';
-
 import 'dart:ui';
 import 'dart:async';
 
-import '../../config.dart';
 import '../../logging.dart';
 import '../../helper.dart';
 
 typedef GetNotificationFunc = AppLifecycleState Function();
 
-Stream<Null> pull(GetNotificationFunc getNotification, final String puller) async* {
+Stream<Null> pull(
+    GetNotificationFunc getNotification, final String puller) async* {
   while (true) {
     final _appState = getNotification();
-    log.finer('refresh pull by ${puller}: app state: ${_appState}');
+    log.finer('refresh pull by $puller: app state: $_appState');
 
     if (_appState == AppLifecycleState.resumed) {
       yield null;

@@ -32,37 +32,32 @@ import '../../sensor/helper.dart' as helper;
 
 typedef ShouldExit = bool Function();
 
-Stream<String> runBinary
-(
-  final String name,
-  { final Stream<String> input,
-    final ShouldExit shouldExit,
-    final List<String> userArgs = const [],
-  }
-) async* {
+Stream<String> runBinary(
+  final String name, {
+  final Stream<String> input,
+  final ShouldExit shouldExit,
+  final List<String> userArgs = const [],
+}) async* {
   final binPath = await helper.getBinaryPath(name);
 
   final appDocDir = await getApplicationDocumentsDirectory();
-  final appDocPath = appDocDir.path;
   final binDir = Directory(appDocDir.path + "/" + config.c.appPath);
 
   await binDir.create();
 
   // print('binDir: ' + binDir.path);
-  const List<String> debugArgs =
-  [
-  ];
-  const List<String> releaseArgs =
-  [
-  ];
+  const List<String> debugArgs = [];
+  const List<String> releaseArgs = [];
 
   const extraArgs = kReleaseMode ? releaseArgs : debugArgs;
 
-  final args =
-  [
-    "--data-dir",
-    binDir.path,
-  ] + extraArgs + config.c.extraArgs + userArgs;
+  final args = [
+        "--data-dir",
+        binDir.path,
+      ] +
+      extraArgs +
+      config.c.extraArgs +
+      userArgs;
 
   log.info('args: ' + args.toString());
 
@@ -81,7 +76,8 @@ Stream<String> runBinary
   }
 
   final _stdout = outputProcess.stdout
-  .transform(utf8.decoder).transform(const LineSplitter());
+      .transform(utf8.decoder)
+      .transform(const LineSplitter());
 
   await for (final line in _stdout) {
     log.finest('process output: ' + line);

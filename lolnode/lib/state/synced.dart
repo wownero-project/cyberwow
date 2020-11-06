@@ -19,7 +19,6 @@ along with CyberWOW.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-
 import 'dart:async';
 import 'dart:collection';
 
@@ -60,9 +59,10 @@ class SyncedState extends AppState {
   String getConnectionsCache = '';
   String getTransactionPoolCache = '';
 
-  SyncedState(appHook, this.stdout, this.processInput, this.processOutput, this.pageIndex)
-  : super (appHook) {
-    pageController = PageController( initialPage: pageIndex );
+  SyncedState(appHook, this.stdout, this.processInput, this.processOutput,
+      this.pageIndex)
+      : super(appHook) {
+    pageController = PageController(initialPage: pageIndex);
   }
 
   void appendInput(final String line) {
@@ -102,8 +102,9 @@ class SyncedState extends AppState {
 
     logStdout();
 
-    Future<void> checkSync() async  {
-      await for (final _null in refresh.pull(appHook.getNotification, 'syncedState')) {
+    Future<void> checkSync() async {
+      await for (final _
+          in refresh.pull(appHook.getNotification, 'syncedState')) {
         if (appHook.isExiting() || userExit) {
           log.fine('Synced state detected exiting');
           break;
@@ -121,17 +122,16 @@ class SyncedState extends AppState {
         getInfoCache = pretty(_getInfoView);
 
         getConnections = await rpc.getConnectionsSimple();
-        final List<Map<String, dynamic>> _getConnectionsView =
-        getConnections
-        .map(rpcView.getConnectionView)
-        .map((x) => rpcView.simpleHeight(height, x))
-        .map(cleanKey)
-        .toList();
+        final List<Map<String, dynamic>> _getConnectionsView = getConnections
+            .map(rpcView.getConnectionView)
+            .map((x) => rpcView.simpleHeight(height, x))
+            .map(cleanKey)
+            .toList();
         getConnectionsCache = pretty(_getConnectionsView);
 
         getTransactionPool = await rpc.getTransactionPoolSimple();
         final List<Map<String, dynamic>> _getTransactionPoolView =
-        getTransactionPool.map(rpc2View.txView).map(cleanKey).toList();
+            getTransactionPool.map(rpc2View.txView).map(cleanKey).toList();
         getTransactionPoolCache = pretty(_getTransactionPoolView);
 
         syncState();
@@ -141,21 +141,14 @@ class SyncedState extends AppState {
     await checkSync();
 
     if (appHook.isExiting() || userExit) {
-      ExitingState _next = ExitingState
-      (
-        appHook, stdout, processOutput
-      );
+      ExitingState _next = ExitingState(appHook, stdout, processOutput);
       return moveState(_next);
     }
 
     log.fine('synced: loop exit');
 
-    ReSyncingState _next = ReSyncingState
-    (
-      appHook, stdout, processInput, processOutput, pageIndex
-    );
+    ReSyncingState _next =
+        ReSyncingState(appHook, stdout, processInput, processOutput, pageIndex);
     return moveState(_next);
   }
 }
-
-

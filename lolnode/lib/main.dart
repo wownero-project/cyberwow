@@ -36,7 +36,7 @@ import 'widget.dart' as widget;
 void main() {
   Logger.root.level = kReleaseMode ? Level.INFO : Level.FINE;
   Logger.root.onRecord.listen((LogRecord rec) {
-      print('${rec.level.name}: ${rec.time}: ${rec.message}');
+    print('${rec.level.name}: ${rec.time}: ${rec.message}');
   });
   runApp(CyberWOW_App());
 }
@@ -47,8 +47,7 @@ class CyberWOW_App extends StatelessWidget {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
 
-    return MaterialApp
-    (
+    return MaterialApp(
       title: 'CyberWOW',
       theme: config.c.theme,
       darkTheme: config.c.theme,
@@ -65,8 +64,8 @@ class CyberWOW_Page extends StatefulWidget {
   _CyberWOW_PageState createState() => _CyberWOW_PageState();
 }
 
-class _CyberWOW_PageState extends State<CyberWOW_Page> with WidgetsBindingObserver
-{
+class _CyberWOW_PageState extends State<CyberWOW_Page>
+    with WidgetsBindingObserver {
   // AppState _state = LoadingState("init...");
   static const _channel = const MethodChannel('send-intent');
 
@@ -86,7 +85,9 @@ class _CyberWOW_PageState extends State<CyberWOW_Page> with WidgetsBindingObserv
   @override
   void didChangeAppLifecycleState(final AppLifecycleState state) {
     log.fine('app cycle: ${state}');
-    setState(() { _notification = state; });
+    setState(() {
+      _notification = state;
+    });
   }
 
   @override
@@ -96,10 +97,7 @@ class _CyberWOW_PageState extends State<CyberWOW_Page> with WidgetsBindingObserv
   }
 
   void _setState(final state.AppState newState) {
-    setState
-    (
-      () => _state = newState
-    );
+    setState(() => _state = newState);
   }
 
   AppLifecycleState _getNotification() {
@@ -110,10 +108,6 @@ class _CyberWOW_PageState extends State<CyberWOW_Page> with WidgetsBindingObserv
     return _exiting;
   }
 
-  state.AppState _getState() {
-    return _state;
-  }
-
   Future<void> buildStateMachine(final state.BlankState _blankState) async {
     final loadingText = config.c.splash;
     state.LoadingState _loadingState = await _blankState.next(loadingText);
@@ -121,24 +115,23 @@ class _CyberWOW_PageState extends State<CyberWOW_Page> with WidgetsBindingObserv
 
     final _initialIntent = await getInitialIntent();
     final _userArgs = _initialIntent
-    .trim()
-    .split(RegExp(r"\s+"))
-    .where((x) => !x.isEmpty)
-    .toList();
+        .trim()
+        .split(RegExp(r"\s+"))
+        .where((x) => x.isNotEmpty)
+        .toList();
 
-    if (!_userArgs.isEmpty) {
-      log.info('user args: ${_userArgs}');
+    if (_userArgs.isNotEmpty) {
+      log.info('user args: $_userArgs');
     }
 
     final syncing = process
-    .runBinary
-    (
-      config.c.outputBin,
-      input: inputStreamController.stream,
-      shouldExit: _isExiting,
-      userArgs: _userArgs,
-    )
-    .asBroadcastStream();
+        .runBinary(
+          config.c.outputBin,
+          input: inputStreamController.stream,
+          shouldExit: _isExiting,
+          userArgs: _userArgs,
+        )
+        .asBroadcastStream();
 
     await _syncingState.next(inputStreamController.sink, syncing);
 
@@ -147,12 +140,13 @@ class _CyberWOW_PageState extends State<CyberWOW_Page> with WidgetsBindingObserv
 
     while (validState && !exited) {
       switch (_state.runtimeType) {
-        case state.ExitingState: {
-          await (_state as state.ExitingState).wait();
-          log.finer('exit state wait done');
-          exited = true;
-        }
-        break;
+        case state.ExitingState:
+          {
+            await (_state as state.ExitingState).wait();
+            log.finer('exit state wait done');
+            exited = true;
+          }
+          break;
 
         case state.SyncedState:
           await (_state as state.SyncedState).next();
@@ -162,7 +156,8 @@ class _CyberWOW_PageState extends State<CyberWOW_Page> with WidgetsBindingObserv
           await (_state as state.ReSyncingState).next();
           break;
 
-        default: validState = false;
+        default:
+          validState = false;
       }
     }
 
@@ -185,7 +180,8 @@ class _CyberWOW_PageState extends State<CyberWOW_Page> with WidgetsBindingObserv
 
     WidgetsBinding.instance.addObserver(this);
 
-    final state.AppHook _appHook = state.AppHook(_setState, _getNotification, _isExiting);
+    final state.AppHook _appHook =
+        state.AppHook(_setState, _getNotification, _isExiting);
     final state.BlankState _blankState = state.BlankState(_appHook);
     _state = _blankState;
 
@@ -208,8 +204,7 @@ class _CyberWOW_PageState extends State<CyberWOW_Page> with WidgetsBindingObserv
 
   @override
   Widget build(final BuildContext context) {
-    return WillPopScope
-    (
+    return WillPopScope(
       onWillPop: () => _exitApp(context),
       child: widget.build(context, _state),
     );

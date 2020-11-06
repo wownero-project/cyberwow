@@ -20,7 +20,6 @@ along with CyberWOW.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
-import 'dart:convert';
 
 import 'rpc/rpc.dart' as rpc;
 import '../../config.dart' as config;
@@ -28,14 +27,16 @@ import '../../logging.dart';
 
 Future<bool> isConnected() async {
   final _connections = await rpc.getConnectionsSimple();
-  log.finer('cyberwow: _connections: ${_connections}');
-  return !_connections.isEmpty;
+  log.finer('cyberwow: _connections: $_connections');
+  return _connections.isNotEmpty;
 }
 
 Future<bool> isSynced() async {
   final _targetHeight = await rpc.targetHeight();
   final _height = await rpc.height();
-  return _targetHeight >= 0 && _targetHeight <= _height && _height > config.minimumHeight;
+  return _targetHeight >= 0 &&
+      _targetHeight <= _height &&
+      _height > config.minimumHeight;
 }
 
 Future<bool> isNotSynced() async {

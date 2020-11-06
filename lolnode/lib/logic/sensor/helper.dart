@@ -20,22 +20,13 @@ along with Wowllet.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
-import 'dart:io';
 
-import 'package:path_provider/path_provider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-
-import '../../logging.dart';
 
 const _methodChannel = const MethodChannel('send-intent');
 
 Future<String> getBinaryDir() async {
   final _dir = await _methodChannel.invokeMethod('getBinaryDir');
-
-  final _binDir = Directory(_dir);
-  final _bins = _binDir.listSync(recursive: true);
-
   return _dir;
 }
 

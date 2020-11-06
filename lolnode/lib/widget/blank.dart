@@ -22,12 +22,9 @@ along with CyberWOW.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:flutter/material.dart';
 
 import '../state.dart';
-import '../config.dart' as config;
 
 Widget build(BuildContext context, BlankState state) {
   return Scaffold(
-    body: Container
-    (
-    ),
+    body: Container(),
   );
 }

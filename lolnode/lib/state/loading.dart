@@ -22,7 +22,6 @@ along with CyberWOW.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config.dart' as config;
-import '../logging.dart';
 import '../helper.dart';
 
 import 'prototype.dart';
@@ -32,7 +31,7 @@ class LoadingState extends AppState {
   final String banner;
   String status = '';
 
-  LoadingState(appHook, this.banner) : super (appHook);
+  LoadingState(appHook, this.banner) : super(appHook);
 
   void append(final String msg) {
     this.status += msg;
@@ -41,7 +40,8 @@ class LoadingState extends AppState {
 
   Future<SyncingState> next() async {
     Future<void> showBanner() async {
-      final Iterable<String> chars = banner.runes.map((x) => String.fromCharCode(x));
+      final Iterable<String> chars =
+          banner.runes.map((x) => String.fromCharCode(x));
 
       for (final String char in chars) {
         append(char);
@@ -53,7 +53,7 @@ class LoadingState extends AppState {
     }
 
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    final _bannerShown = await _prefs.getBool(config.bannerShownKey);
+    final _bannerShown = _prefs.getBool(config.bannerShownKey);
 
     if (_bannerShown == null) {
       await showBanner();

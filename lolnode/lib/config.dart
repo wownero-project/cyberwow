@@ -19,7 +19,6 @@ along with CyberWOW.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'config/prototype.dart';
 import 'config/lolnode.dart' as cryptoConfig;
 
 final c = cryptoConfig.config;
@@ -39,4 +38,3 @@ const stdoutLineBufferSize = 200;
 const bannerShownKey = 'banner-shown';
 
 const int maxPoolTxSize = 5000;
-
