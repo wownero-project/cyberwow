@@ -142,12 +142,12 @@ with nixpkgs;
     which
 
     zsh
-    # openjdk10
-    # openjdk
-    # jetbrains.jdk
-    # zulu
-    # jdk14_headless
+    # jdk8 for sdkmanager
+    # jdk8
+
+    # jdk for android dev
     jdk
+
     # dart_dev
     gnumake
     gcc
