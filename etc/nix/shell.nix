@@ -121,8 +121,8 @@ let
     nixpkgs.fetchgit
     {
       url = "https://gitlab.com/fuwa/lolnero.git"
-    ; rev = "53894f3"
-    ; sha256 = "19rcrlmap20ix4nnqzbm7y8hz00q3785qjlis20yvqc6592sjirq"
+    ; rev = "63d0dc6"
+    ; sha256 = "0m615y6kiizi7cbamxz9phwv570v7v2mpxkr4ji62ag1b240jwmc"
     ; fetchSubmodules = false
     ; }
 
