@@ -19,41 +19,33 @@ along with CyberWOW.  If not, see <https://www.gnu.org/licenses/>.
 
 */
 
-import 'dart:collection';
+import 'dart:io';
 
 import '../config.dart' as config;
 import '../logging.dart';
 
 import 'prototype.dart';
 
-class ExitingState extends AppState {
-  final Queue<String> stdout;
-  final Stream<String> processOutput;
-
-  ExitingState(appHook, this.stdout, this.processOutput) : super (appHook);
-
-  void append(final String msg) {
-    stdout.addLast(msg);
-    while (stdout.length > config.stdoutLineBufferSize) {
-      stdout.removeFirst();
-    }
-    syncState();
-  }
+class ExitingState extends AppStateAutomata {
+  ExitingState(appHook) : super(appHook);
 
   Future<void> wait() async {
-    log.finer("Exiting wait");
-
-    Future<void> printStdout() async {
-      await for (final line in processOutput) {
-        log.finer('exiting: print stdout loop');
-
-        append(line);
-        log.info(line);
-      }
+    if (appHook.process != null) {
+      log.fine('exiting state: killing process');
+      appHook.process.kill();
+      await appHook.process.exitCode.timeout(
+        Duration(seconds: config.processKillWaitingInSeconds),
+        onTimeout: () {
+          log.warning('process exitCode timeout');
+          appHook.process.kill(ProcessSignal.sigkill);
+          return -1;
+        },
+      );
     }
-
-    await printStdout();
-
     log.finer('exiting state done');
+  }
+
+  Future<AppStateAutomata> next() async {
+    return null;
   }
 }

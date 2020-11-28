@@ -38,3 +38,9 @@ const stdoutLineBufferSize = 200;
 const bannerShownKey = 'banner-shown';
 
 const int maxPoolTxSize = 5000;
+
+const int forcedUpdateInSeconds = 3;
+const int processTimeoutInSeconds = 4;
+const int processKillWaitingInSeconds = 2;
+const int logLines = 200;
+const int defaultPageIndex = 1;

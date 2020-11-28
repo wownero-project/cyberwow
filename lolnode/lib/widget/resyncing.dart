@@ -35,7 +35,7 @@ Widget build(BuildContext context, ReSyncingState state) {
     Expanded(
         flex: 5,
         child: Text(
-          state.stdout.last,
+          state.appHook.stdout.last,
           style: Theme.of(context).textTheme.bodyText2,
         )),
   ];

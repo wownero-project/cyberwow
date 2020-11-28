@@ -20,13 +20,11 @@ along with CyberWOW.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:flutter/material.dart';
 
 import '../config.dart' as config;
 import '../logic/sensor/daemon.dart' as daemon;
-import '../logic/controller/refresh.dart' as refresh;
 import '../logic/sensor/rpc/rpc.dart' as rpc;
 import '../logic/sensor/rpc/rpc2.dart' as rpc;
 import '../logic/view/rpc/rpc2.dart' as rpc2View;
@@ -36,119 +34,98 @@ import '../logging.dart';
 
 import 'prototype.dart';
 import 'resyncing.dart';
-import 'exiting.dart';
 
-class SyncedState extends AppState {
-  final Queue<String> stdout;
-  final StreamSink<String> processInput;
-  final Stream<String> processOutput;
+class SyncedState extends AppStateAutomata {
   final TextEditingController textController = TextEditingController();
 
-  int height;
   bool synced = true;
   bool userExit = false;
   bool connected = true;
+
   Map<String, dynamic> getInfo = {};
   List<Map<String, dynamic>> getConnections = [];
   List<Map<String, dynamic>> getTransactionPool = [];
+
+  int height;
   int pageIndex;
-  String syncInfo = 'syncInfo';
   PageController pageController;
 
   String getInfoCache = '';
   String getConnectionsCache = '';
   String getTransactionPoolCache = '';
 
-  SyncedState(appHook, this.stdout, this.processInput, this.processOutput,
-      this.pageIndex)
-      : super(appHook) {
+  SyncedState(appHook, this.height, this.pageIndex) : super(appHook) {
     pageController = PageController(initialPage: pageIndex);
+    // textController.addListener(this.appendInput);
   }
 
-  void appendInput(final String line) {
-    stdout.addLast(config.c.promptString + line);
-    syncState();
-    processInput.add(line);
+  void appendInput(final String x) {
+    final _input = config.c.promptString + x;
+    log.fine(_input);
+    final _stdoutQueue = appHook.stdout;
+    _stdoutQueue.addLast('\n' + _input);
+    while (_stdoutQueue.length > config.logLines) {
+      _stdoutQueue.removeFirst();
+    }
+    appHook.stdoutCache = _stdoutQueue.join();
 
-    if (line == 'exit') {
+    final _stdin = appHook.process.stdin;
+
+    _stdin.writeln(x);
+    _stdin.flush();
+
+    syncState();
+
+    if (x == 'exit') {
       userExit = true;
     }
-  }
-
-  void append(final String msg) {
-    stdout.addLast(msg);
-    while (stdout.length > config.stdoutLineBufferSize) {
-      stdout.removeFirst();
-    }
-    syncState();
   }
 
   void onPageChanged(int value) {
     this.pageIndex = value;
   }
 
-  Future<AppState> next() async {
+  Future<AppStateAutomata> next() async {
     log.fine("Synced next");
-
-    Future<void> logStdout() async {
-      await for (final line in processOutput) {
-        if (!synced) break;
-
-        // print('synced: print stdout loop');
-        append(line);
-        log.info(line);
-      }
+    if (userExit) {
+      return exitState();
+    }
+    if (await shouldExit()) {
+      return exitState();
     }
 
-    logStdout();
-
-    Future<void> checkSync() async {
-      await for (final _
-          in refresh.pull(appHook.getNotification, 'syncedState')) {
-        if (appHook.isExiting() || userExit) {
-          log.fine('Synced state detected exiting');
-          break;
-        }
-
-        if (await daemon.isNotSynced()) {
-          synced = false;
-          break;
-        }
-        // log.finer('SyncedState: checkSync loop');
-        height = await rpc.height();
-        connected = await daemon.isConnected();
-        getInfo = await rpc.getInfoSimple();
-        final _getInfoView = cleanKey(rpcView.getInfoView(getInfo));
-        getInfoCache = pretty(_getInfoView);
-
-        getConnections = await rpc.getConnectionsSimple();
-        final List<Map<String, dynamic>> _getConnectionsView = getConnections
-            .map(rpcView.getConnectionView)
-            .map((x) => rpcView.simpleHeight(height, x))
-            .map(cleanKey)
-            .toList();
-        getConnectionsCache = pretty(_getConnectionsView);
-
-        getTransactionPool = await rpc.getTransactionPoolSimple();
-        final List<Map<String, dynamic>> _getTransactionPoolView =
-            getTransactionPool.map(rpc2View.txView).map(cleanKey).toList();
-        getTransactionPoolCache = pretty(_getTransactionPoolView);
-
-        syncState();
-      }
+    if (shouldSkip()) {
+      log.finest('skipping state update');
+      await tick();
+      return this;
     }
 
-    await checkSync();
-
-    if (appHook.isExiting() || userExit) {
-      ExitingState _next = ExitingState(appHook, stdout, processOutput);
-      return moveState(_next);
+    if (await daemon.isNotSynced()) {
+      return ReSyncingState(appHook, pageIndex);
     }
+
+    // log.finer('SyncedState: checkSync loop');
+    height = await rpc.height();
+    connected = await daemon.isConnected();
+    getInfo = await rpc.getInfoSimple();
+    final _getInfoView = cleanKey(rpcView.getInfoView(getInfo));
+    getInfoCache = pretty(_getInfoView);
+
+    getConnections = await rpc.getConnectionsSimple();
+    final List<Map<String, dynamic>> _getConnectionsView = getConnections
+        .map(rpcView.getConnectionView)
+        .map((x) => rpcView.simpleHeight(height, x))
+        .map(cleanKey)
+        .toList();
+    getConnectionsCache = pretty(_getConnectionsView);
+
+    getTransactionPool = await rpc.getTransactionPoolSimple();
+    final List<Map<String, dynamic>> _getTransactionPoolView =
+        getTransactionPool.map(rpc2View.txView).map(cleanKey).toList();
+    getTransactionPoolCache = pretty(_getTransactionPoolView);
 
     log.fine('synced: loop exit');
 
-    ReSyncingState _next =
-        ReSyncingState(appHook, stdout, processInput, processOutput, pageIndex);
-    return moveState(_next);
+    return this;
   }
 }

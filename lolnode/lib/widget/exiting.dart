@@ -25,27 +25,23 @@ import '../state.dart';
 
 Widget build(BuildContext context, ExitingState state) {
   return Scaffold(
-    // appBar: AppBar
-    // (
-    //   // headline6: Text(widget.headline6),
-    //   headline6: Text('CyberWOW'),
-    // ),
     body: Container(
-      // padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(40.0),
       child: Align(
         alignment: Alignment.topLeft,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Expanded(
-                flex: 1,
-                child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    reverse: true,
-                    child: Text(
-                      state.stdout.join(),
-                      style: Theme.of(context).textTheme.bodyText2,
-                    )))
+            Spacer(
+              flex: 1,
+            ),
+            Text(
+              '',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            Spacer(
+              flex: 1,
+            ),
           ],
         ),
       ),

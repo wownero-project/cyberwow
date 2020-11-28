@@ -146,8 +146,6 @@ Widget rpcView(BuildContext context, String headline6, String body) {
 
 Widget getInfo(BuildContext context, SyncedState state) =>
     rpcView(context, 'info', state.getInfoCache);
-Widget syncInfo(BuildContext context, SyncedState state) =>
-    rpcView(context, 'sync info', pretty(state.syncInfo));
 
 Widget getTransactionPool(BuildContext context, SyncedState state) {
   final pool = state.getTransactionPool;
@@ -166,7 +164,7 @@ Widget getConnections(BuildContext context, SyncedState state) {
 Widget terminalView(BuildContext context, String headline6, SyncedState state) {
   final input = TextFormField(
     controller: state.textController,
-    textInputAction: TextInputAction.next,
+    // textInputAction: TextInputAction.next,
     autofocus: true,
     autocorrect: false,
     enableSuggestions: false,
@@ -201,6 +199,8 @@ Widget terminalView(BuildContext context, String headline6, SyncedState state) {
       final _text = state.textController.text.trim();
       final line = autoReplace(_text);
 
+      log.info('textController: $state.controller');
+
       if (line.isNotEmpty) {
         log.finer('terminal input: $line');
         state.appendInput(line);
@@ -227,7 +227,7 @@ Widget terminalView(BuildContext context, String headline6, SyncedState state) {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        state.stdout.join('\n'),
+                        state.appHook.stdoutCache,
                         style: Theme.of(context).textTheme.bodyText1,
                       )
                     ],
@@ -262,7 +262,6 @@ Widget pageView(BuildContext context, SyncedState state) {
       getTransactionPool(context, state),
       getConnections(context, state),
       getInfo(context, state),
-      // syncInfo(state),
     ],
   );
 }

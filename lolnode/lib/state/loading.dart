@@ -20,18 +20,25 @@ along with CyberWOW.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:async/async.dart';
+
+import 'dart:async';
+import 'dart:core';
+import 'dart:convert';
+import 'dart:collection';
 
 import '../config.dart' as config;
 import '../helper.dart';
+import '../logic/controller/process/run.dart' as process;
+import '../logging.dart';
 
 import 'prototype.dart';
 import 'syncing.dart';
 
-class LoadingState extends AppState {
-  final String banner;
+class LoadingState extends AppStateAutomata {
   String status = '';
 
-  LoadingState(appHook, this.banner) : super(appHook);
+  LoadingState(appHook) : super(appHook);
 
   void append(final String msg) {
     this.status += msg;
@@ -41,11 +48,12 @@ class LoadingState extends AppState {
   Future<SyncingState> next() async {
     Future<void> showBanner() async {
       final Iterable<String> chars =
-          banner.runes.map((x) => String.fromCharCode(x));
+          config.c.splash.runes.map((x) => String.fromCharCode(x));
 
       for (final String char in chars) {
         append(char);
-        await Future.delayed(Duration(milliseconds: config.c.splashDelay));
+        final int _delay = config.c.splashDelay;
+        await Future.delayed(Duration(milliseconds: _delay));
       }
 
       await tick();
@@ -60,7 +68,50 @@ class LoadingState extends AppState {
       await _prefs.setBool(config.bannerShownKey, true);
     }
 
-    SyncingState _next = SyncingState(appHook);
-    return moveState(_next);
+    final _initialIntent = await appHook.getInitialIntent();
+    final _userArgs = _initialIntent
+        .trim()
+        .split(RegExp(r"\s+"))
+        .where((x) => x.isNotEmpty)
+        .toList();
+
+    if (_userArgs.isNotEmpty) {
+      log.info('user args: $_userArgs');
+    }
+
+    final _process = await process.runBinary(
+      config.c.outputBin,
+      userArgs: _userArgs,
+    );
+
+    log.fine('process created');
+
+    final _stdout = StreamGroup.merge([_process.stdout, _process.stderr]
+            .map((x) => x.transform(utf8.decoder).transform(LineSplitter())))
+        .asBroadcastStream();
+
+    final _stdoutQueue = Queue();
+
+    AppHook _appHook = AppHook(
+      appHook.setState,
+      appHook.getNotification,
+      appHook.isExiting,
+      appHook.getInitialIntent,
+      _process,
+      _stdoutQueue,
+    );
+
+    _stdout.listen((x) {
+      log.fine(x);
+      _stdoutQueue.addLast(x);
+      while (_stdoutQueue.length > config.logLines) {
+        _stdoutQueue.removeFirst();
+      }
+      _appHook.stdoutCache = _stdoutQueue.join('\n');
+    });
+
+    _process.exitCode.whenComplete(() => _appHook.processCompleted = true);
+
+    return SyncingState(_appHook);
   }
 }

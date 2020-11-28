@@ -22,76 +22,38 @@ along with CyberWOW.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:async';
 import 'dart:collection';
 
-import '../logic/controller/refresh.dart' as refresh;
 import '../logic/sensor/rpc/rpc.dart' as rpc;
 import '../logic/sensor/daemon.dart' as daemon;
 import '../config.dart' as config;
 import '../logging.dart';
+import '../helper.dart';
 
 import 'prototype.dart';
 import 'synced.dart';
-import 'exiting.dart';
 
-class ReSyncingState extends AppState {
-  final Queue<String> stdout;
-  final StreamSink<String> processInput;
-  final Stream<String> processOutput;
+class ReSyncingState extends AppStateAutomata {
   final int pageIndex;
-
   bool synced = false;
 
-  ReSyncingState(appHook, this.stdout, this.processInput, this.processOutput,
-      this.pageIndex)
-      : super(appHook);
+  ReSyncingState(appHook, this.pageIndex) : super(appHook);
 
-  void append(final String msg) {
-    stdout.addLast(msg);
-    while (stdout.length > config.stdoutLineBufferSize) {
-      stdout.removeFirst();
-    }
-    syncState();
-  }
-
-  Future<AppState> next() async {
+  Future<AppStateAutomata> next() async {
     log.fine("ReSyncing next");
+    if (await shouldExit()) return exitState();
 
-    Future<void> printStdout() async {
-      await for (final line in processOutput) {
-        if (synced) break;
-        // print('re-syncing: print stdout loop');
-        append(line);
-        log.info(line);
-      }
+    if (shouldSkip()) {
+      log.finest('skipping state update');
+      await tick();
+      return this;
     }
 
-    Future<void> checkSync() async {
-      await for (final _
-          in refresh.pull(appHook.getNotification, 'ReSyncingState')) {
-        if (appHook.isExiting()) {
-          log.fine('ReSyncing state detected exiting');
-          break;
-        }
-
-        if (await daemon.isSynced()) {
-          synced = true;
-          break;
-        }
-        // print('re-syncing: checkSync loop');
-      }
+    if (await daemon.isSynced()) {
+      final int _height = await rpc.height();
+      return SyncedState(appHook, _height, pageIndex);
+    } else {
+      return this;
     }
 
-    printStdout();
-    await checkSync();
 
-    if (appHook.isExiting()) {
-      ExitingState _next = ExitingState(appHook, stdout, processOutput);
-      return moveState(_next);
-    }
-
-    log.fine('resync: await exit');
-    SyncedState _next =
-        SyncedState(appHook, stdout, processInput, processOutput, pageIndex);
-    _next.height = await rpc.height();
-    return moveState(_next);
   }
 }

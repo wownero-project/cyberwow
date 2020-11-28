@@ -43,7 +43,7 @@ Widget build(BuildContext context, SyncingState state) {
                     scrollDirection: Axis.vertical,
                     reverse: true,
                     child: Text(
-                      state.stdout.join('\n'),
+                      state.appHook.stdoutCache,
                       style: Theme.of(context).textTheme.bodyText2,
                     ))),
           ],

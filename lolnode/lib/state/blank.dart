@@ -21,14 +21,18 @@ along with CyberWOW.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 
+import '../logging.dart';
 import 'prototype.dart';
 import 'loading.dart';
 
-class BlankState extends AppState {
-  BlankState(appHook) : super (appHook);
+class BlankState extends AppStateAutomata {
+  BlankState(appHook) : super(appHook);
 
-  Future<LoadingState> next(String status) async {
-    LoadingState _next = LoadingState(appHook, status);
-    return moveState(_next);
+  Future<AppStateAutomata> next() async {
+    if (await shouldExit()) return exitState();
+
+    log.fine('blank state next');
+
+    return LoadingState(appHook);
   }
 }

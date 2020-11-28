@@ -31,8 +31,7 @@ class CryptoConfig {
   final List<String> extraArgs;
   final String promptString;
   final int hashViewBlockLength;
-  const CryptoConfig
-  (
+  const CryptoConfig(
     this.outputBin,
     this.appPath,
     this.splash,

@@ -32,12 +32,10 @@ import '../../sensor/helper.dart' as helper;
 
 typedef ShouldExit = bool Function();
 
-Stream<String> runBinary(
+Future<Process> runBinary(
   final String name, {
-  final Stream<String> input,
-  final ShouldExit shouldExit,
   final List<String> userArgs = const [],
-}) async* {
+}) async {
   final binPath = await helper.getBinaryPath(name);
 
   final appDocDir = await getApplicationDocumentsDirectory();
@@ -61,37 +59,5 @@ Stream<String> runBinary(
 
   log.info('args: ' + args.toString());
 
-  final outputProcess = await Process.start(binPath, args);
-
-  Future<void> printInput() async {
-    await for (final line in input) {
-      log.finest('process input: ' + line);
-      outputProcess.stdin.writeln(line);
-      outputProcess.stdin.flush();
-    }
-  }
-
-  if (input != null) {
-    printInput();
-  }
-
-  final _stdout = outputProcess.stdout
-      .transform(utf8.decoder)
-      .transform(const LineSplitter());
-
-  await for (final line in _stdout) {
-    log.finest('process output: ' + line);
-    yield line;
-  }
-
-  if (config.isEmu) return;
-
-  if (shouldExit != null) {
-    if (!shouldExit()) {
-      log.warning('process is ded');
-      exit(1);
-    }
-  }
-
-  log.info('Daemon exited gracefully.');
+  return Process.start(binPath, args);
 }

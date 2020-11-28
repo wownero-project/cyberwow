@@ -26,9 +26,9 @@ import 'package:logging/logging.dart';
 
 import 'dart:io';
 import 'dart:async';
+import 'dart:collection';
 
 import 'config.dart' as config;
-import 'logic/controller/process/run.dart' as process;
 import 'logging.dart';
 import 'state.dart' as state;
 import 'widget.dart' as widget;
@@ -109,31 +109,7 @@ class _LNodePageState extends State<LNodePage> with WidgetsBindingObserver {
   }
 
   Future<void> buildStateMachine(final state.BlankState _blankState) async {
-    final loadingText = config.c.splash;
-    state.LoadingState _loadingState = await _blankState.next(loadingText);
-    state.SyncingState _syncingState = await _loadingState.next();
-
-    final _initialIntent = await getInitialIntent();
-    final _userArgs = _initialIntent
-        .trim()
-        .split(RegExp(r"\s+"))
-        .where((x) => x.isNotEmpty)
-        .toList();
-
-    if (_userArgs.isNotEmpty) {
-      log.info('user args: $_userArgs');
-    }
-
-    final syncing = process
-        .runBinary(
-          config.c.outputBin,
-          input: _inputStreamController.stream,
-          shouldExit: _isExiting,
-          userArgs: _userArgs,
-        )
-        .asBroadcastStream();
-
-    await _syncingState.next(_inputStreamController.sink, syncing);
+    _setState(_blankState);
 
     bool exited = false;
     bool validState = true;
@@ -148,14 +124,13 @@ class _LNodePageState extends State<LNodePage> with WidgetsBindingObserver {
           }
           break;
 
+        case state.BlankState:
+        case state.LoadingState:
+        case state.SyncingState:
         case state.SyncedState:
-          await (_state as state.SyncedState).next();
-          break;
-
         case state.ReSyncingState:
-          await (_state as state.ReSyncingState).next();
+          _setState(await (_state as state.AppStateAutomata).next());
           break;
-
         default:
           validState = false;
       }
@@ -165,7 +140,6 @@ class _LNodePageState extends State<LNodePage> with WidgetsBindingObserver {
 
     if (exited) {
       log.finer('popping navigator');
-      // SystemNavigator.pop();
       exit(0);
     } else {
       log.severe('Reached invalid state!');
@@ -180,8 +154,14 @@ class _LNodePageState extends State<LNodePage> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addObserver(this);
 
-    final state.AppHook _appHook =
-        state.AppHook(_setState, _getNotification, _isExiting);
+    final state.AppHook _appHook = state.AppHook(
+      _setState,
+      _getNotification,
+      _isExiting,
+      getInitialIntent,
+      null,
+      Queue(),
+    );
     final state.BlankState _blankState = state.BlankState(_appHook);
     _state = _blankState;
 

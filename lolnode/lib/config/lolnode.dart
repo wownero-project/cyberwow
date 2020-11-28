@@ -24,7 +24,7 @@ import 'package:flutter/material.dart';
 import 'prototype.dart';
 
 // const crtGreen = Color.fromRGBO(0, 255, 102, 1);
-const crtGreen = Color.fromRGBO(51, 255, 51, 0.9);
+const crtGreen = Color.fromRGBO(51, 255, 51, 1);
 
 final _theme = ThemeData(
   brightness: Brightness.dark,
