@@ -165,7 +165,7 @@ Widget terminalView(BuildContext context, String headline6, SyncedState state) {
   final input = TextFormField(
     controller: state.textController,
     // textInputAction: TextInputAction.next,
-    autofocus: true,
+    // autofocus: true,
     autocorrect: false,
     enableSuggestions: false,
     keyboardType: TextInputType.visiblePassword,
@@ -204,11 +204,9 @@ Widget terminalView(BuildContext context, String headline6, SyncedState state) {
       if (line.isNotEmpty) {
         log.finer('terminal input: $line');
         state.appendInput(line);
-        state.textController.clear();
-      } else {
-        state.textController.clear();
-        SystemChannels.textInput.invokeMethod('TextInput.hide');
       }
+
+      state.textController.clear();
     },
   );
 
