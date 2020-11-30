@@ -84,15 +84,11 @@ for arch in ${archs[@]}; do
           -D BUILD_TESTS=OFF \
           -D ARCH="armv8-a" \
           -D STATIC=ON \
-          -D BUILD_64=ON \
-          -D CMAKE_BUILD_TYPE=release \
           -D ANDROID=true \
-          -D INSTALL_VENDORED_LIBUNBOUND=ON \
-          -D BUILD_TAG="android-armv8" \
           -D CMAKE_SYSTEM_NAME="Android" \
           -D CMAKE_ANDROID_STANDALONE_TOOLCHAIN="${TOOLCHAIN_DIR}" \
           -D CMAKE_ANDROID_ARCH_ABI="arm64-v8a" \
-          -D MANUAL_SUBMODULES=ON \
+          -D USE_CCACHE=ON \
           ../.. && make -j${NPROC} daemon
     )
     popd
