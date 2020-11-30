@@ -117,12 +117,16 @@ let
     ; sha256 = "1x6lll81z4ah732zwpw481qfbzg7yml0nwdgbnd5388jnz3274ym"
     ; }
 
+
+; lolnero-rev = "24a98e29"
+; lolnero-sha256 = "11785gjdmx9a2x3g2k9h4fhpnff16xn397qvazm9dv5gpdqmraci"
+
 ; lolnero-source =
     nixpkgs.fetchgit
     {
       url = "https://gitlab.com/fuwa/lolnero.git"
-    ; rev = "e4d8418"
-    ; sha256 = "1lva8aix7ldibyd5852gcxp1isvalylc2mcc5r5wvgcqwijc3953"
+    ; rev = lolnero-rev
+    ; sha256 = lolnero-sha256
     ; fetchSubmodules = false
     ; }
 
@@ -194,6 +198,7 @@ with nixpkgs;
     export SRC_SODIUM=${sodium-source}
     export SRC_RAPIDJSON_DIR=${nixpkgs.rapidjson.src}
     export SRC_LOLNERO_DIR=${lolnero-source}
+    export VERSIONTAG_LOLNERO=${lolnero-rev}
 
     export PATH_NCURSES=${nixpkgs.ncurses5}
     export PATH
