@@ -84,6 +84,7 @@ for arch in ${archs[@]}; do
           -D BUILD_TESTS=OFF \
           -D ARCH="armv8-a" \
           -D STATIC=ON \
+          -D CMAKE_BUILD_TYPE=release \
           -D ANDROID=true \
           -D CMAKE_SYSTEM_NAME="Android" \
           -D CMAKE_ANDROID_STANDALONE_TOOLCHAIN="${TOOLCHAIN_DIR}" \
