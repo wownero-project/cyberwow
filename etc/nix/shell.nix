@@ -118,8 +118,8 @@ let
     ; }
 
 
-; lolnero-rev = "8d78d07"
-; lolnero-sha256 = "0xnnk3iahvnd7bb8zmksdiw9kw8sz2wq85z7jf5mn1np76sj0amq"
+; lolnero-rev = "ca3f6394"
+; lolnero-sha256 = "08aq624jzb620ggdb8afhbwdnjapjz6j7x2asyh9vl700bxrg357"
 
 ; lolnero-source =
     nixpkgs.fetchgit
