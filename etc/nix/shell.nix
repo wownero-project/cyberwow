@@ -61,14 +61,14 @@ let
     ; sha256 = "02q1hy423syl868jdyaxjm44hn59cmni5019r811vinagvq3m7qi"
     ; }
 
-; ndk-r21b =
+; ndk-r21d =
     let
-      version = "r21b"
+      version = "r21d"
     ; in
     nixpkgs.fetchzip
     {
       url = "https://dl.google.com/android/repository/android-ndk-${version}-linux-x86_64.zip"
-    ; sha256 = "0shz45b6f2k4lnca8fgghh4cdh53vghfn26cj4mkirkk4cpv1qry"
+    ; sha256 = "0jc3pd0022bgld7k3sy9sc1n0ahfbcx194gil2ka3p8s4nyf0fsg"
     ; }
 
 ; openssl-source =
@@ -187,8 +187,8 @@ with nixpkgs;
     PATH=~/SDK/Android/android-studio/bin:$PATH
     PATH=~/SDK/Android/Sdk/tools/bin:$PATH
 
-    export ANDROID_NDK_VERSION=r21b
-    export ANDROID_NDK_ROOT=${ndk-r21b}
+    export ANDROID_NDK_VERSION=r21d
+    export ANDROID_NDK_ROOT=${ndk-r21d}
     export NDK=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64
     PATH=$NDK/bin:$PATH
 
