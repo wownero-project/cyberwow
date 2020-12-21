@@ -95,7 +95,6 @@ for arch in ${archs[@]}; do
             --with-date_time \
             --with-filesystem \
             --with-program_options \
-            --with-regex \
             --with-serialization \
             --with-system \
             --with-thread \
