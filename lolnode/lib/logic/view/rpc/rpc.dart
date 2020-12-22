@@ -87,13 +87,11 @@ Map<String, dynamic> getConnectionView(Map<String, dynamic> x) {
     'current_upload',
     'avg_download',
     'avg_upload',
-    'pruning_seed',
   ].where((k) => _formattedConn.keys.contains(k)).toList();
 
   final _sortedConn = {for (final k in keys) k: _formattedConn[k]};
 
-  final _cleanedUpConn = _sortedConn
-    ..removeWhere((k, v) => k == 'pruning_seed' && x[k] == 0);
+  final _cleanedUpConn = _sortedConn;
 
   return _cleanedUpConn;
 }
