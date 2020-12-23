@@ -91,14 +91,12 @@ for arch in ${archs[@]}; do
             --build-dir=android \
             -sICONV_PATH=${ICONV_PATH} \
             --build-type=minimal \
-            --with-chrono \
             --with-date_time \
             --with-filesystem \
             --with-program_options \
             --with-serialization \
             --with-system \
             --with-thread \
-            --with-locale \
             install \
             -j${NPROC} \
     )
