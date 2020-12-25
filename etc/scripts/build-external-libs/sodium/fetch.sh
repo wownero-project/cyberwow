@@ -48,8 +48,8 @@ if [ ! -z $SRC_SODIUM ]; then
     cp $SRC_SODIUM  $out
 else
     curl -# -L -o $out -O $url
+    echo "${hash} $out" | sha256sum -c
 fi
 
-echo "${hash} $out" | sha256sum -c
 
 tar xzf $out

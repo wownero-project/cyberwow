@@ -82,17 +82,6 @@ let
     ; sha256 = "0ikdcc038i7jk8h7asq5xcn8b1xc2rrbc88yfm4hqbz3y5s4gc6x"
     ; }
 
-; iconv-source =
-    let
-      name = "libiconv"
-    ; version = "1.16"
-    ; in
-    nixpkgs.fetchurl
-    {
-      url = "http://ftp.gnu.org/pub/gnu/${name}/${name}-${version}.tar.gz"
-    ; sha256 = "016c57srqr0bza5fxjxfrx6aqxkqy0s3gkhcg7p7fhk5i6sv38g6"
-    ; }
-
 ; boost-source =
     let
       name = "boost"
@@ -100,11 +89,12 @@ let
     ; dot_version = "1.71.0"
     ; in
     nixpkgs.fetchurl
-    {
-      url =
-      "https://dl.bintray.com/boostorg/release/{dot_version}/source/${name}_${version}.tar.bz2"
-    ; sha256 = "1vi40mcair6xgm9k8rsavyhcia3ia28q8k0blknwgy4b3sh8sfnp"
-    ; }
+      {
+        url =
+        "https://dl.bintray.com/boostorg/release/${dot_version}/source/${name}_${version}.tar.bz2"
+      # ; sha256 = "1js9zpij58l60kx46s3lxdp5207igppjnhqigwhbpdvd04gb6gcm"
+      ; sha256 = "1vi40mcair6xgm9k8rsavyhcia3ia28q8k0blknwgy4b3sh8sfnp"
+      ; }
 
 ; sodium-source =
     let
@@ -118,8 +108,8 @@ let
     ; }
 
 
-; lolnero-rev = "477166ec"
-; lolnero-sha256 = "06anfr1njyq0zq6bsqjki20fygdr2ly51v02y42mfbw6gn6jli07"
+; lolnero-rev = "cfd6e3cc11"
+; lolnero-sha256 = "0x0h65bxkihvfgrym7kkik7zzik2fnmrlfhljl2009d7znyxhakb"
 
 ; lolnero-source =
     nixpkgs.fetchgit
@@ -193,7 +183,6 @@ with nixpkgs;
     PATH=$NDK/bin:$PATH
 
     export SRC_OPENSSL=${openssl-source}
-    export SRC_ICONV=${iconv-source}
     export SRC_BOOST=${boost-source}
     export SRC_SODIUM=${sodium-source}
     export SRC_RAPIDJSON_DIR=${nixpkgs.rapidjson.src}

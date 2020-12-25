@@ -38,7 +38,7 @@ cd $BUILD_ROOT_SRC
 name=boost
 version=1_71_0
 dot_version=1.71.0
-hash=d73a8da01e8bf8c7eda40b4c84915071a8c8a0df4a6734537ddde4a8580524ee
+hash=953db31e016db7bb207f11432bef7df100516eeb746843fa0486a222e3fd49cb
 url=https://dl.bintray.com/boostorg/release/${dot_version}/source/${name}_${version}.tar.bz2
 out=${name}_${version}.tar.bz2
 
@@ -49,8 +49,8 @@ if [ ! -z $SRC_BOOST ]; then
     cp $SRC_BOOST  $out
 else
     curl -# -L -o $out -O $url
+    echo "$hash $out" | sha256sum -c
 fi
 
-echo "$hash $out" | sha256sum -c
 
 tar xfv $out

@@ -78,11 +78,7 @@ clean-external-libs:
 toolchain:
 	$(script)/toolchain/import.sh
 
-iconv: toolchain
-	$(script)/iconv/fetch.sh
-	$(script)/iconv/build.sh
-
-boost: iconv
+boost:
 	$(script)/boost/fetch.sh
 	$(script)/boost/build.sh
 
