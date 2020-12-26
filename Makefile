@@ -92,7 +92,6 @@ sodium: toolchain
 
 toolchain-lol:
 	$(script)/toolchain-lol/import.sh
-	$(script)/toolchain-lol/patch.sh
 
 lolnero: openssl boost sodium toolchain-lol
 	$(script)/lolnero/fetch.sh

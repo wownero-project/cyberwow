@@ -41,20 +41,3 @@ ndk_mirror=$build_root/mirror
 cp -vr $ANDROID_NDK_ROOT_LOL/ $ndk_mirror
 chmod u+w -R $ndk_mirror
 
-args="--api 23 --stl=libc++"
-
-archs=(arm64)
-
-for arch in ${archs[@]}; do
-    bin=$ndk_mirror/build/tools/make_standalone_toolchain.py
-
-    out=$build_root/tool/$arch
-    echo "installing toolchain for ${arch} into $out"
-
-    if [ ! -d "$out" ]; then
-        echo "installing $arch"
-        echo $bin $args --arch $arch --install-dir $out
-        $bin $args --arch $arch --install-dir $out
-    fi
-
-done

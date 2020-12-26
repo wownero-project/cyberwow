@@ -46,20 +46,7 @@ let
     xkeyboard_config
   ]
 
-# ; ndk-r17c = (nixpkgs.androidenv.composeAndroidPackages
-#   {
-#     ndkVersion = "17.2.4988734"
-#   ; }).ndk-bundle
-
-; ndk-r17c =
-    let
-      version = "r17c"
-    ; in
-    nixpkgs.fetchzip
-    {
-      url = "https://dl.google.com/android/repository/android-ndk-${version}-linux-x86_64.zip"
-    ; sha256 = "02q1hy423syl868jdyaxjm44hn59cmni5019r811vinagvq3m7qi"
-    ; }
+; vendorCmake = nixpkgs.libsForQt5.callPackage ./deps/cmake {}
 
 ; ndk-r21d =
     let
@@ -69,6 +56,16 @@ let
     {
       url = "https://dl.google.com/android/repository/android-ndk-${version}-linux-x86_64.zip"
     ; sha256 = "0jc3pd0022bgld7k3sy9sc1n0ahfbcx194gil2ka3p8s4nyf0fsg"
+    ; }
+
+; ndk-r23 =
+    let
+      version = "r23-beta1"
+    ; in
+    nixpkgs.fetchzip
+    {
+      url = "https://dl.google.com/android/repository/android-ndk-${version}-linux-x86_64.zip"
+    ; sha256 = "1cj0gph1a49a67ysqqvjmkiff4ppjc2409ry09ji8dsvfy930s06"
     ; }
 
 ; openssl-source =
@@ -108,8 +105,8 @@ let
     ; }
 
 
-; lolnero-rev = "708bf1377"
-; lolnero-sha256 = "0c37b1i87bma02l1z2k0qfmsi9i0zv8d62dfqj8j6gn5bmqib07g"
+; lolnero-rev = "2d610c6"
+; lolnero-sha256 = "02ay2jyd2wibh861hyssqqhpdk944rhij5ym380j1lb947gba3dr"
 
 ; lolnero-source =
     nixpkgs.fetchgit
@@ -157,7 +154,7 @@ with nixpkgs;
     automake
     gnum4
     pkgconfig
-    cmake
+    vendorCmake
     ccache
 
     python2
@@ -195,8 +192,8 @@ with nixpkgs;
     export _JAVA_AWT_WM_NONREPARENTING=1
     export DART_VM_OPTIONS=--root-certs-file=/etc/ssl/certs/ca-certificates.crt
 
-    export ANDROID_NDK_VERSION_LOL=r17c
-    export ANDROID_NDK_ROOT_LOL=${ndk-r17c}
+    export ANDROID_NDK_VERSION_LOL=r23
+    export ANDROID_NDK_ROOT_LOL=${ndk-r23}
 
     export ZSH_INIT=${nixpkgs.oh-my-zsh}/share/oh-my-zsh/oh-my-zsh.sh
     exec zsh

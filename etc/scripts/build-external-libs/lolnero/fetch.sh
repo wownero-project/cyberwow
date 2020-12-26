@@ -48,6 +48,7 @@ rm -rf $out
 if [ ! -z $SRC_LOLNERO_DIR ]; then
     echo "using pre-fetched $name"
     rsync -av --no-perms --no-owner --no-group --delete $SRC_LOLNERO_DIR/* $out
+    mkdir $out/external
     chmod u+w -R $out/external
     cd $name
 else

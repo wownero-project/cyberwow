@@ -60,38 +60,40 @@ for arch in ${archs[@]}; do
             ;;
     esac
 
-    # PREFIX=$build_root/build/${name}/$arch
+    echo ">>>>>>>>>>>>>"
+    ndk_root=${BUILD_ROOT_LOL}/mirror
+    echo "ndk_root: $ndk_root"
+
     PREFIX=$build_root/build/$arch
     echo "building for ${arch}"
 
-    mkdir -p $PREFIX/dlib/
-    rm -f $PREFIX/dlib/libtinfo.so.5
-    ln -s $PATH_NCURSES/lib/libncursesw.so.5 $PREFIX/dlib/libtinfo.so.5
-
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PREFIX/dlib
-    export TOOLCHAIN_DIR=`realpath $build_root_lol/tool/${arch}`
-    export PATH=$PATH:$build_root/host/bin
+    ccdir=$ndk_root/toolchains/llvm/prebuilt/linux-x86_64/bin/host/bin
+    echo "prefix: ${PREFIX}"
 
     mkdir -p build/release
     pushd .
     cd build/release
     (
-        CMAKE_INCLUDE_PATH="${PREFIX}/include" \
-        CMAKE_LIBRARY_PATH="${PREFIX}/lib" \
-        CC=aarch64-linux-android-clang \
-        CXX=aarch64-linux-android-clang++ \
+        CC="ccache $ccdir/aarch64-linux-android-clang" \
+        CXX="ccache $ccdir/aarch64-linux-android-clang++" \
         cmake \
-          -D BUILD_TESTS=OFF \
-          -D ARCH="armv8-a" \
-          -D STATIC=ON \
+          -DOPENSSL_INCLUDE_DIR=$PREFIX/include/openssl \
+          -DOPENSSL_CRYPTO_LIBRARY=$PREFIX/lib/libcrypto.a \
+          -DOPENSSL_SSL_LIBRARY=$PREFIX/lib/libssl.a \
+          -DBoost_INCLUDE_DIR=$PREFIX/include \
+          -DBoost_LIBRARY_DIR=$PREFIX/lib \
+          -DSODIUM_LIBRARY=$PREFIX/lib/libsodium.a \
           -D CMAKE_BUILD_TYPE=release \
           -D ANDROID=true \
           -D CMAKE_SYSTEM_NAME="Android" \
-          -D CMAKE_ANDROID_STANDALONE_TOOLCHAIN="${TOOLCHAIN_DIR}" \
-          -D CMAKE_ANDROID_ARCH_ABI="arm64-v8a" \
+          -D ANDROID_ABI="arm64-v8a" \
           -D USE_CCACHE=ON \
           -D USE_READLINE=OFF \
           -D VERSIONTAG="${VERSIONTAG_LOLNERO}" \
+          -DCMAKE_TOOLCHAIN_FILE=${ndk_root}/build/cmake/android.toolchain.cmake \
+          -DANDROID_TOOLCHAIN=clang \
+          -DANDROID_NATIVE_API_LEVEL=28 \
           ../.. && make -j${NPROC} daemon
     )
     popd
