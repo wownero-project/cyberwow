@@ -76,8 +76,6 @@ final config = CryptoConfig(
   _theme,
   45679,
   [
-    '--log-file=/dev/null',
-    '--max-log-file-size=0',
     '--p2p-use-ipv6',
   ],
   '[1337@lol]: ',
