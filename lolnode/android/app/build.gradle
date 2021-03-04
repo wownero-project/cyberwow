@@ -41,8 +41,8 @@ android {
         applicationId "org.lolnero.node"
         minSdkVersion 28
         targetSdkVersion 29
-        versionCode 36
-        versionName "0.6.2.8"
+        versionCode 37
+        versionName "0.8.3.1"
     }
 
     if(project.hasProperty("RELEASE_STORE_FILE")) {
