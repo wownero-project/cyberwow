@@ -60,7 +60,6 @@ for arch in ${archs[@]}; do
             ;;
     esac
 
-    echo ">>>>>>>>>>>>>"
     ndk_root=${BUILD_ROOT_LOL}/mirror
     echo "ndk_root: $ndk_root"
 
@@ -69,7 +68,6 @@ for arch in ${archs[@]}; do
 
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PREFIX/dlib
     ccdir=$ndk_root/toolchains/llvm/prebuilt/linux-x86_64/bin/host/bin
-    echo "prefix: ${PREFIX}"
 
     mkdir -p build/release
     pushd .
