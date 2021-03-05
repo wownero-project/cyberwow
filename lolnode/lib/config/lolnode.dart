@@ -55,12 +55,12 @@ final _theme = ThemeData(
     ),
     bodyText2: TextStyle(
       fontFamily: 'VT323',
-      fontSize: 17,
+      fontSize: 16,
       height: 1,
     ),
     bodyText1: TextStyle(
       fontFamily: 'RobotoMono',
-      fontSize: 12.5,
+      fontSize: 12,
     ),
   ).apply(
     bodyColor: crtGreen,
