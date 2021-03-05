@@ -92,11 +92,9 @@ for arch in ${archs[@]}; do
             -sICONV_PATH=${ICONV_PATH} \
             --build-type=minimal \
             --with-date_time \
-            --with-filesystem \
             --with-program_options \
             --with-serialization \
             --with-system \
-            --with-thread \
             install \
             -j${NPROC} \
     )
