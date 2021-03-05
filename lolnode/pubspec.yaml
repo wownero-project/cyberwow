@@ -1,7 +1,7 @@
 name: lolnode
 description: A lolnode mobile node
 
-version: 0.8.3+0
+version: 0.8.3+1
 
 environment:
   sdk: ">=2.10.0 <3.0.0"
