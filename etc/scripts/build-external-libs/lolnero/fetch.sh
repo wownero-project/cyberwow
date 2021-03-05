@@ -48,8 +48,7 @@ rm -rf $out
 if [ ! -z $SRC_LOLNERO_DIR ]; then
     echo "using pre-fetched $name"
     rsync -av --no-perms --no-owner --no-group --delete $SRC_LOLNERO_DIR/* $out
-    mkdir $out/external
-    chmod u+w -R $out/external
+    chmod u+w -R $out/vendor
     cd $name
 else
     git clone --depth 1 https://gitlab.com/fuwa/lolnero.git -b $version
@@ -60,7 +59,7 @@ fi
 
 if [ ! -z $SRC_RAPIDJSON_DIR ]; then
     echo "using pre-fetched rapidjson"
-    rsync -av --no-perms --no-owner --no-group --delete $SRC_RAPIDJSON_DIR/* external/rapidjson
+    rsync -av --no-perms --no-owner --no-group --delete $SRC_RAPIDJSON_DIR/* vendor/rapidjson
 else
-    git submodule update --init external/rapidjson
+    git submodule update --init vendor/rapidjson
 fi

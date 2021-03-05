@@ -94,7 +94,7 @@ for arch in ${archs[@]}; do
           -DCMAKE_TOOLCHAIN_FILE=${ndk_root}/build/cmake/android.toolchain.cmake \
           -DANDROID_TOOLCHAIN=clang \
           -DANDROID_NATIVE_API_LEVEL=28 \
-          ../.. && make -j${NPROC} daemon
+          ../.. && make -j${NPROC} lolnerod
     )
     popd
 
