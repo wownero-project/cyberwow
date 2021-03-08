@@ -34,6 +34,11 @@ final _theme = ThemeData(
   cursorColor: crtGreen,
   backgroundColor: Colors.black,
   scaffoldBackgroundColor: Colors.black,
+  textSelectionTheme: TextSelectionThemeData(
+    cursorColor: crtGreen,
+    selectionColor: crtGreen,
+    selectionHandleColor: crtGreen,
+  ),
   textTheme: TextTheme(
     headline4: TextStyle(
       fontFamily: 'RobotoMono',
