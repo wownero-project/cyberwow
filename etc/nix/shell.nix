@@ -105,8 +105,8 @@ let
     ; }
 
 
-; lolnero-rev = "v0.8.3.5"
-; lolnero-sha256 = "19rig3p0ja0dkcj2qdgcq3c7w38r5zis2llyb8vsd79y0xb4113d"
+; lolnero-rev = "v0.8.3.8"
+; lolnero-sha256 = "0jx4almv534f7sna7hinjzxv5rvyx9hyqynsjc9h7z6bwrpy70kf"
 
 ; lolnero-source =
     nixpkgs.fetchgit
