@@ -134,10 +134,10 @@ with nixpkgs;
 
     zsh
     # jdk8 for sdkmanager
-    # jdk8
+    jdk8
 
     # jdk for android dev
-    jdk
+    # jdk
 
     # dart_dev
     gnumake
