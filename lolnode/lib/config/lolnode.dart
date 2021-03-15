@@ -85,4 +85,5 @@ final config = CryptoConfig(
   ],
   '[1337@lol]: ',
   6,
+  2,
 );

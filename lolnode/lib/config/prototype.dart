@@ -31,6 +31,7 @@ class CryptoConfig {
   final List<String> extraArgs;
   final String promptString;
   final int hashViewBlockLength;
+  final int peerMinimumConnectedTimeInSeconds;
   const CryptoConfig(
     this.outputBin,
     this.appPath,
@@ -41,5 +42,6 @@ class CryptoConfig {
     this.extraArgs,
     this.promptString,
     this.hashViewBlockLength,
+    this.peerMinimumConnectedTimeInSeconds,
   );
 }

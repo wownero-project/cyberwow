@@ -25,6 +25,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../helper.dart';
 import '../../interface/rpc/rpc.dart';
+import '../../../config.dart' as config;
 
 Future<http.Response> syncInfo() => rpc('sync_info');
 Future<String> syncInfoString() => rpcString('sync_info');
@@ -54,9 +55,10 @@ Future<List<Map<String, dynamic>>> getConnectionsSimple() async {
   final _connections =
       await rpc('get_connections', field: 'connections').then(asJsonArray);
 
-  const minActiveTime = 8;
   final _activeConnections =
-      _connections.where((x) => x['live_time'] > minActiveTime);
+      _connections.where(
+      (x) => x['live_time'] > config.c.peerMinimumConnectedTimeInSeconds
+      );
 
   final _sortedConn = _activeConnections.toList()
     ..sort((x, y) {
