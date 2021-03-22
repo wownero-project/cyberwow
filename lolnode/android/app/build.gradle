@@ -41,7 +41,7 @@ android {
         applicationId "org.lolnero.node"
         minSdkVersion 28
         targetSdkVersion 30
-        versionCode 42
+        versionCode 43
         versionName "0.9.0.1"
     }
 
