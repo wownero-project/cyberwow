@@ -60,12 +60,12 @@ let
 
 ; ndk-r23 =
     let
-      version = "r23-beta1"
+      version = "r23-beta2"
     ; in
     nixpkgs.fetchzip
     {
       url = "https://dl.google.com/android/repository/android-ndk-${version}-linux-x86_64.zip"
-    ; sha256 = "1cj0gph1a49a67ysqqvjmkiff4ppjc2409ry09ji8dsvfy930s06"
+    ; sha256 = "14kd40a6fclvy8brmrjx7iyvp99snvlvr37dz5p0rhz6i6fd1jza"
     ; }
 
 ; openssl-source =
