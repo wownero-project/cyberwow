@@ -51,6 +51,7 @@ class ReSyncingState extends AppStateAutomata {
       final int _height = await rpc.height();
       return SyncedState(appHook, _height, pageIndex);
     } else {
+      await tick();
       return this;
     }
 

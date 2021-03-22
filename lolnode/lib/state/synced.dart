@@ -104,6 +104,7 @@ class SyncedState extends AppStateAutomata {
       return ReSyncingState(appHook, pageIndex);
     }
 
+    await tick();
     // log.finer('SyncedState: checkSync loop');
     height = await rpc.height();
     connected = await daemon.isConnected();
