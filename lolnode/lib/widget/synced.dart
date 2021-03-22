@@ -23,7 +23,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../state.dart';
-import '../helper.dart';
 import '../logging.dart';
 
 Widget summary(BuildContext context, SyncedState state) {

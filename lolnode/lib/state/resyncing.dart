@@ -20,11 +20,9 @@ along with CyberWOW.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
-import 'dart:collection';
 
 import '../logic/sensor/rpc/rpc.dart' as rpc;
 import '../logic/sensor/daemon.dart' as daemon;
-import '../config.dart' as config;
 import '../logging.dart';
 import '../helper.dart';
 
@@ -54,7 +52,5 @@ class ReSyncingState extends AppStateAutomata {
       await tick();
       return this;
     }
-
-
   }
 }
