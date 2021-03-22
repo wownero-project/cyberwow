@@ -51,15 +51,13 @@ class LNodeApp extends StatelessWidget {
       title: 'L node',
       theme: config.c.theme,
       darkTheme: config.c.theme,
-      home: LNodePage(headline6: 'L node'),
+      home: LNodePage(),
     );
   }
 }
 
 class LNodePage extends StatefulWidget {
-  LNodePage({Key key, this.headline6}) : super(key: key);
-  final String headline6;
-
+  LNodePage({Key? key}) : super(key: key);
   @override
   _LNodePageState createState() => _LNodePageState();
 }
@@ -68,7 +66,7 @@ class _LNodePageState extends State<LNodePage> with WidgetsBindingObserver {
   // AppState _state = LoadingState("init...");
   static const _channel = const MethodChannel('send-intent');
 
-  state.AppState _state;
+  state.AppState? _state;
   AppLifecycleState _notification = AppLifecycleState.resumed;
 
   bool _exiting = false;
@@ -91,7 +89,7 @@ class _LNodePageState extends State<LNodePage> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     _inputStreamController.close();
     super.dispose();
   }
@@ -152,7 +150,7 @@ class _LNodePageState extends State<LNodePage> with WidgetsBindingObserver {
     super.initState();
     log.fine("LNodePageState initState");
 
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
 
     final state.AppHook _appHook = state.AppHook(
       _setState,
@@ -170,7 +168,7 @@ class _LNodePageState extends State<LNodePage> with WidgetsBindingObserver {
 
   Future<bool> _exitApp(final BuildContext context) async {
     log.info("LNodePageState _exitApp");
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
 
     _exiting = true;
     _inputStreamController.sink.add('exit');
@@ -186,7 +184,7 @@ class _LNodePageState extends State<LNodePage> with WidgetsBindingObserver {
   Widget build(final BuildContext context) {
     return WillPopScope(
       onWillPop: () => _exitApp(context),
-      child: widget.build(context, _state),
+      child: widget.build(context, _state!),
     );
   }
 }

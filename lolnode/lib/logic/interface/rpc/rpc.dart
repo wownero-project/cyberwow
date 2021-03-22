@@ -29,25 +29,18 @@ import '../../../config.dart' as config;
 import '../../../helper.dart';
 import '../../../logging.dart';
 
-Future<http.Response> rpcHTTP(final String method) async {
-  final url = 'http://${config.host}:${config.c.port}/json_rpc';
+Future<http.Response?> rpcHTTP(final String method) async {
+  final url = Uri.parse('http://${config.host}:${config.c.port}/json_rpc');
 
-  final body = json.encode
-  (
-    {
-      'jsonrpc': '2.0',
-      'method': method,
-    }
-  );
+  final body = json.encode({
+    'jsonrpc': '2.0',
+    'method': method,
+  });
 
   try {
-    final response = await http.post
-    ( url,
-      body: body
-    );
+    final response = await http.post(url, body: body);
     return response;
-  }
-  catch (e) {
+  } catch (e) {
     log.warning(e);
     return null;
   }
@@ -55,7 +48,7 @@ Future<http.Response> rpcHTTP(final String method) async {
 
 dynamic jsonDecode(final String responseBody) => json.decode(responseBody);
 
-Future<dynamic> rpc(final String method, {final String field}) async {
+Future<dynamic> rpc(final String method, {final String? field}) async {
   final response = await rpcHTTP(method);
 
   if (response == null) return null;
@@ -73,7 +66,7 @@ Future<dynamic> rpc(final String method, {final String field}) async {
   }
 }
 
-Future<String> rpcString(final String method, {final String field}) async {
+Future<String> rpcString(final String method, {final String? field}) async {
   final _field = await rpc(method, field: field);
   return pretty(_field);
 }

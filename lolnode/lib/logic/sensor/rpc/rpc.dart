@@ -21,20 +21,18 @@ along with CyberWOW.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 
-import 'package:http/http.dart' as http;
-
 import '../../../helper.dart';
 import '../../interface/rpc/rpc.dart';
 import '../../../config.dart' as config;
 
-Future<http.Response> syncInfo() => rpc('sync_info');
+Future<dynamic> syncInfo() => rpc('sync_info');
 Future<String> syncInfoString() => rpcString('sync_info');
 
 Future<int> targetHeight() =>
     rpc('sync_info', field: 'target_height').then(asInt);
 Future<int> height() => rpc('sync_info', field: 'height').then(asInt);
 
-Future<http.Response> getInfo() => rpc('get_info');
+Future<dynamic> getInfo() => rpc('get_info');
 
 Future<Map<String, dynamic>> getInfoSimple() async {
   final _getInfo = await rpc('get_info').then(asMap);
@@ -55,10 +53,8 @@ Future<List<Map<String, dynamic>>> getConnectionsSimple() async {
   final _connections =
       await rpc('get_connections', field: 'connections').then(asJsonArray);
 
-  final _activeConnections =
-      _connections.where(
-      (x) => x['live_time'] > config.c.peerMinimumConnectedTimeInSeconds
-      );
+  final _activeConnections = _connections.where(
+      (x) => x['live_time'] > config.c.peerMinimumConnectedTimeInSeconds);
 
   final _sortedConn = _activeConnections.toList()
     ..sort((x, y) {

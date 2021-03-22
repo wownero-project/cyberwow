@@ -31,7 +31,7 @@ import '../../../config.dart' as config;
 import '../../../logging.dart';
 import '../../interface/rpc/rpc2.dart' as rpc2;
 
-Future<http.Response> getTransactionPool() async =>
+Future<http.Response?> getTransactionPool() async =>
     rpc2.rpc2('get_transaction_pool');
 
 Map<String, String> txInOutCache = {};

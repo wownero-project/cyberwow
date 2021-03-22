@@ -20,6 +20,7 @@ along with CyberWOW.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -48,7 +49,7 @@ class SyncedState extends AppStateAutomata {
 
   int height;
   int pageIndex;
-  PageController pageController;
+  PageController? pageController;
 
   String getInfoCache = '';
   String getConnectionsCache = '';
@@ -69,10 +70,11 @@ class SyncedState extends AppStateAutomata {
     }
     appHook.stdoutCache = _stdoutQueue.join();
 
-    final _stdin = appHook.process.stdin;
+    // ignore: close_sinks
+    final IOSink? _stdin = appHook.process?.stdin;
 
-    _stdin.writeln(x);
-    _stdin.flush();
+    _stdin?.writeln(x);
+    _stdin?.flush();
 
     syncState();
 

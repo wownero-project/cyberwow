@@ -39,7 +39,7 @@ class AppHook {
   final IsExitingFunc isExiting;
   final GetInitialIntentFunc getInitialIntent;
 
-  final Process process;
+  final Process? process;
   final Queue stdout;
   String stdoutCache;
   bool processCompleted;
@@ -66,7 +66,7 @@ class AppState {
     if (_isExiting) return true;
 
     if (appHook.process != null && appHook.processCompleted) {
-      final _exitCode = await appHook.process.exitCode;
+      final _exitCode = await appHook.process?.exitCode;
       return _exitCode != 0;
     }
 

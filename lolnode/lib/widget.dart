@@ -31,12 +31,19 @@ import 'widget/exiting.dart' as exiting;
 
 Widget build(final BuildContext context, final AppState state) {
   switch (state.runtimeType) {
-    case BlankState: return blank.build(context, state);
-    case LoadingState: return loading.build(context, state);
-    case SyncingState: return syncing.build(context, state);
-    case SyncedState: return synced.build(context, state);
-    case ReSyncingState: return resyncing.build(context, state);
-    case ExitingState: return exiting.build(context, state);
-    default: return Placeholder();
+    case BlankState:
+      return blank.build(context, state as BlankState);
+    case LoadingState:
+      return loading.build(context, state as LoadingState);
+    case SyncingState:
+      return syncing.build(context, state as SyncingState);
+    case SyncedState:
+      return synced.build(context, state as SyncedState);
+    case ReSyncingState:
+      return resyncing.build(context, state as ReSyncingState);
+    case ExitingState:
+      return exiting.build(context, state as ExitingState);
+    default:
+      return Placeholder();
   }
 }

@@ -31,9 +31,11 @@ final _theme = ThemeData(
   primaryColor: crtGreen,
   hintColor: Colors.yellow,
   accentColor: crtGreen,
-  cursorColor: crtGreen,
   backgroundColor: Colors.black,
   scaffoldBackgroundColor: Colors.black,
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(primary: crtGreen),
+  ),
   textSelectionTheme: TextSelectionThemeData(
     cursorColor: crtGreen,
     selectionColor: crtGreen,

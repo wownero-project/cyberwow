@@ -25,6 +25,7 @@ import '../config.dart' as config;
 import '../logging.dart';
 
 import 'prototype.dart';
+import 'blank.dart';
 
 class ExitingState extends AppStateAutomata {
   ExitingState(appHook) : super(appHook);
@@ -32,12 +33,12 @@ class ExitingState extends AppStateAutomata {
   Future<void> wait() async {
     if (appHook.process != null) {
       log.fine('exiting state: killing process');
-      appHook.process.kill();
-      await appHook.process.exitCode.timeout(
+      appHook.process?.kill();
+      await appHook.process?.exitCode.timeout(
         Duration(seconds: config.processKillWaitingInSeconds),
         onTimeout: () {
           log.warning('process exitCode timeout');
-          appHook.process.kill(ProcessSignal.sigkill);
+          appHook.process?.kill(ProcessSignal.sigkill);
           return -1;
         },
       );
@@ -46,6 +47,6 @@ class ExitingState extends AppStateAutomata {
   }
 
   Future<AppStateAutomata> next() async {
-    return null;
+    return BlankState(appHook);
   }
 }
