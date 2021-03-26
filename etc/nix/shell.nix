@@ -71,26 +71,26 @@ let
 ; openssl-source =
     let
       name = "openssl"
-    ; version = "1.1.1g"
+    ; version = "1.1.1k"
     ; in
     nixpkgs.fetchurl
     {
       url = "https://www.openssl.org/source/${name}-${version}.tar.gz"
-    ; sha256 = "0ikdcc038i7jk8h7asq5xcn8b1xc2rrbc88yfm4hqbz3y5s4gc6x"
+    ; sha256 = "1rdfzcrxy9y38wqdw5942vmdax9hjhgrprzxm42csal7p5shhal9"
     ; }
 
 ; boost-source =
     let
       name = "boost"
-    ; version = "1_71_0"
-    ; dot_version = "1.71.0"
+    ; version = "1_75_0"
+    ; dot_version = "1.75.0"
     ; in
     nixpkgs.fetchurl
       {
         url =
         "https://dl.bintray.com/boostorg/release/${dot_version}/source/${name}_${version}.tar.bz2"
       # ; sha256 = "1js9zpij58l60kx46s3lxdp5207igppjnhqigwhbpdvd04gb6gcm"
-      ; sha256 = "1vi40mcair6xgm9k8rsavyhcia3ia28q8k0blknwgy4b3sh8sfnp"
+      ; sha256 = "1js9zpij58l60kx46s3lxdp5207igppjnhqigwhbpdvd04gb6gcm"
       ; }
 
 ; sodium-source =
@@ -105,8 +105,8 @@ let
     ; }
 
 
-; lolnero-rev = "v0.9.0.1"
-; lolnero-sha256 = "1r58753zcacjlaq0h86xx837rsnq5g0mhyvkg2p6nkbmpiacy0dk"
+; lolnero-rev = "v0.9.1.2"
+; lolnero-sha256 = "0hc9c1mrivq153xrn8pn2w27ky34jwakyy70kjw412gqkydwgkna"
 
 ; lolnero-source =
     nixpkgs.fetchgit
@@ -168,11 +168,10 @@ with nixpkgs;
 
 
 ; profile = ''
-    export ANDROID_HOME=~/SDK/Android/Sdk
+    export ANDROID_HOME=~/local/sdk/android
 
     PATH=~/local/sdk/flutter/stable/bin:$PATH
-    PATH=~/SDK/Android/android-studio/bin:$PATH
-    PATH=~/SDK/Android/Sdk/tools/bin:$PATH
+    PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
 
     export ANDROID_NDK_VERSION=r21d
     export ANDROID_NDK_ROOT=${ndk-r21d}

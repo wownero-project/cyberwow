@@ -37,7 +37,7 @@ build_root=$BUILD_ROOT
 src_root=$BUILD_ROOT_SRC
 
 name=boost
-version=1_71_0
+version=1_75_0
 
 cd $src_root/${name}_${version}
 
