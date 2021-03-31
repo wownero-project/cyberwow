@@ -91,7 +91,6 @@ for arch in ${archs[@]}; do
             --build-dir=android \
             -sICONV_PATH=${ICONV_PATH} \
             --build-type=minimal \
-            --with-date_time \
             --with-program_options \
             --with-serialization \
             --with-system \
