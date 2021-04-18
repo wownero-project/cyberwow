@@ -158,6 +158,7 @@ with nixpkgs;
     ccache
 
     python2
+    ninja
   ]
   ++ android-studio-deps
   )

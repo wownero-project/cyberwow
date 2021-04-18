@@ -73,9 +73,12 @@ for arch in ${archs[@]}; do
     pushd .
     cd build/release
     (
-        CC="ccache $ccdir/aarch64-linux-android-clang" \
-        CXX="ccache $ccdir/aarch64-linux-android-clang++" \
-        cmake \
+        CC="$ccdir/aarch64-linux-android-clang" \
+          CXX="$ccdir/aarch64-linux-android-clang++" \
+          cmake \
+          -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+          -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+          -G Ninja \
           -DOPENSSL_INCLUDE_DIR=$PREFIX/include/openssl \
           -DOPENSSL_CRYPTO_LIBRARY=$PREFIX/lib/libcrypto.a \
           -DOPENSSL_SSL_LIBRARY=$PREFIX/lib/libssl.a \
@@ -92,7 +95,7 @@ for arch in ${archs[@]}; do
           -DCMAKE_TOOLCHAIN_FILE=${ndk_root}/build/cmake/android.toolchain.cmake \
           -DANDROID_TOOLCHAIN=clang \
           -DANDROID_NATIVE_API_LEVEL=28 \
-          ../.. && make -j${NPROC} lolnerod
+          ../.. && ninja -j${NPROC} lolnerod
     )
     popd
 
