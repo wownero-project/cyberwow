@@ -89,9 +89,7 @@ for arch in ${archs[@]}; do
           -D ANDROID=true \
           -D CMAKE_SYSTEM_NAME="Android" \
           -D ANDROID_ABI="arm64-v8a" \
-          -D USE_CCACHE=ON \
           -D USE_READLINE=OFF \
-          -D VERSIONTAG="${VERSIONTAG_LOLNERO}" \
           -DCMAKE_TOOLCHAIN_FILE=${ndk_root}/build/cmake/android.toolchain.cmake \
           -DANDROID_TOOLCHAIN=clang \
           -DANDROID_NATIVE_API_LEVEL=28 \
