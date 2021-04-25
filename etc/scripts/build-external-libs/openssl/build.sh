@@ -37,7 +37,7 @@ build_root=$BUILD_ROOT
 src_root=$BUILD_ROOT_SRC
 
 name=openssl
-version=1.1.1g
+version=1.1.1k
 
 cd $src_root/${name}-${version}
 
