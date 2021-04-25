@@ -36,9 +36,8 @@ source etc/scripts/build-external-libs/env.sh
 cd $BUILD_ROOT_SRC
 
 name=wownero
-version=v0.8.0.0
-# version=dev-v0.8
-githash=1271a7e3a97c0d81816b401627aefb6c6697d0b3
+version=v0.9.3.3
+githash=e2d2b9a447502e22467af9df20e0732b3dd4ac4c
 out=wownero
 
 chmod u+w -f -R $out || true
@@ -51,7 +50,7 @@ if [ ! -z $SRC_WOWNERO_DIR ]; then
     chmod u+w -R $out/external
     cd $name
 else
-    git clone --depth 1 https://github.com/wownero/wownero.git -b $version
+    git clone --depth 1 https://git.wownero.com/wownero/wownero.git -b $version
     cd $name
     test `git rev-parse HEAD` = $githash || exit 1
 fi

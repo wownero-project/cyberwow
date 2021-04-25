@@ -54,7 +54,7 @@ Widget summary(BuildContext context, SyncedState state) {
             flex: 17,
           ),
           Image.asset
-          ('assets/wownero_symbol.png',
+          ('assets/wow-sonic.png',
             height: 220,
           ),
           Spacer

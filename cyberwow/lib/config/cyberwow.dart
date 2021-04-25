@@ -84,7 +84,7 @@ final config = CryptoConfig
 (
   'libwownerod.so',
   'wownerod',
-  'Follow the white rabbit.',
+  'You ever danced with the devil in the pale moonlight?',
   70,
   _theme,
   34568,
