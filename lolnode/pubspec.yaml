@@ -1,7 +1,7 @@
 name: lolnero_node
 description: A lolnode mobile node
 
-version: 0.9.4+0
+version: 0.9.5+0
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
