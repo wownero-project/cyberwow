@@ -48,24 +48,24 @@ let
 
 ; vendorCmake = nixpkgs.libsForQt5.callPackage ./deps/cmake {}
 
-; ndk-r21d =
+; ndk-r21 =
     let
-      version = "r21d"
+      version = "r21e"
     ; in
     nixpkgs.fetchzip
     {
       url = "https://dl.google.com/android/repository/android-ndk-${version}-linux-x86_64.zip"
-    ; sha256 = "0jc3pd0022bgld7k3sy9sc1n0ahfbcx194gil2ka3p8s4nyf0fsg"
+    ; sha256 = "10gv70bblifypx1r4qy771p92amxaq3yrbd7j5fzmipdyar5hs9h"
     ; }
 
 ; ndk-r23 =
     let
-      version = "r23-beta2"
+      version = "r23-beta3"
     ; in
     nixpkgs.fetchzip
     {
       url = "https://dl.google.com/android/repository/android-ndk-${version}-linux-x86_64.zip"
-    ; sha256 = "14kd40a6fclvy8brmrjx7iyvp99snvlvr37dz5p0rhz6i6fd1jza"
+    ; sha256 = "12gcg8w7ybxlqa034jawc364d084wq2bl9rsz210l1hayp1y7xg8"
     ; }
 
 ; openssl-source =
@@ -174,8 +174,8 @@ with nixpkgs;
     PATH=~/local/sdk/flutter/stable/bin:$PATH
     PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
 
-    export ANDROID_NDK_VERSION=r21d
-    export ANDROID_NDK_ROOT=${ndk-r21d}
+    export ANDROID_NDK_VERSION=r21
+    export ANDROID_NDK_ROOT=${ndk-r21}
     export NDK=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64
     PATH=$NDK/bin:$PATH
 
